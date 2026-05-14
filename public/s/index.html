@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GetChecked — Station</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    body{background:var(--black)}
+    .hero{padding:28px 20px 20px;border-bottom:1px solid var(--border)}
+    .sid{font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:8px}
+    .sname{font-family:var(--font-display);font-weight:900;font-size:clamp(26px,7vw,46px);text-transform:uppercase;line-height:.94;margin-bottom:8px}
+    .smeta{font-size:13px;color:var(--dim);line-height:1.5}
+    .sfee{font-family:var(--font-display);font-weight:900;font-size:44px;color:var(--yellow);line-height:1;margin:14px 0 3px}
+    .form-wrap{background:var(--off);border-top:1px solid var(--border);padding:20px}
+    .form-wrap h2{font-family:var(--font-display);font-weight:700;font-size:18px;text-transform:uppercase;margin-bottom:6px}
+    .form-wrap p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+    .fg{margin-bottom:12px}
+    .fl{font-family:var(--font-display);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);display:block;margin-bottom:4px}
+    .fl .r{color:var(--yellow)}
+    .fi{width:100%;background:var(--black);border:1.5px solid var(--border);border-radius:4px;padding:10px 13px;color:var(--white);font-size:15px;outline:none;transition:border-color .15s;box-sizing:border-box}
+    .fi:focus{border-color:var(--yellow)}
+    .fi::placeholder{color:var(--muted)}
+    .fs{width:100%;background:var(--black);border:1.5px solid var(--border);border-radius:4px;padding:10px 13px;color:var(--white);font-size:15px;outline:none;box-sizing:border-box}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .counter{display:flex;align-items:center;gap:10px;margin-top:4px}
+    .cbtn{width:40px;height:40px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--white);font-size:22px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .cbtn:hover{background:var(--border)}
+    .cval{font-family:var(--font-display);font-weight:900;font-size:26px;color:var(--yellow);min-width:24px;text-align:center}
+    .total-box{background:var(--surface);border-radius:4px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin:14px 0}
+    .total-lhs{font-size:12px;color:var(--muted)}
+    .total-num{font-family:var(--font-display);font-weight:900;font-size:22px;color:var(--yellow)}
+    .sbtn{width:100%;background:var(--yellow);color:var(--black);font-family:var(--font-display);font-weight:900;font-size:17px;letter-spacing:.06em;text-transform:uppercase;padding:15px;border:none;border-radius:4px;cursor:pointer;margin-top:4px}
+    .sbtn:hover{opacity:.88}
+    .sbtn:disabled{opacity:.5;cursor:not-allowed}
+    .eerr{color:var(--red);font-size:11px;margin-top:3px;display:none}
+    .priv{font-size:11px;color:var(--muted);text-align:center;margin-top:7px;line-height:1.5}
+    .succ{display:none;padding:20px}
+    .slabel{font-family:var(--font-display);font-weight:700;font-size:12px;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+    .tip{background:#1a1700;border:1px solid #2a2800;border-radius:6px;padding:12px;margin-top:14px}
+    .tip-h{font-family:var(--font-display);font-weight:700;font-size:11px;color:var(--yellow);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+    .tip-b{font-size:12px;color:var(--muted);line-height:1.5}
+    .drow{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
+    .drow:last-child{border-bottom:none}
+    .dk{color:var(--muted);font-family:var(--font-display);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+    .dv{color:var(--light);text-align:right;max-width:200px}
+    .perkbox{background:#141400;border:1px solid #2a2800;border-radius:6px;padding:12px 14px;margin-top:12px;display:flex;align-items:flex-start;gap:10px}
+    .ph{font-family:var(--font-display);font-weight:700;font-size:11px;text-transform:uppercase;color:var(--yellow);letter-spacing:.08em;margin-bottom:2px}
+    .pb{font-size:12px;color:var(--muted);line-height:1.5}
+    .philbox{background:#0a1a0a;border:1px solid #1a3a1a;border-radius:6px;padding:12px;margin-top:12px}
+    @media(max-width:400px){.frow{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div id="nav-root"></div>
+
+<div id="nf" style="display:none;padding:60px 20px;text-align:center">
+  <div style="font-family:var(--font-display);font-weight:900;font-size:40px;color:var(--muted);margin-bottom:10px">Station not found</div>
+  <p style="color:var(--muted);margin-bottom:18px">Check the station ID and try again.</p>
+  <a href="/nyc" class="btn btn-primary">Find a station</a>
+</div>
+
+<div id="sr" style="display:none">
+  <div class="hero">
+    <div class="sid" id="sid">—</div>
+    <div class="sname" id="sname">—</div>
+    <div class="smeta" id="saddr"></div>
+    <div class="smeta" id="shours" style="margin-top:2px"></div>
+    <div class="sfee" id="sfee">—</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">per item · pay directly to the shop</div>
+    <div id="spay" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div id="sperk"></div>
+  </div>
+
+  <div class="form-wrap" id="fwrap">
+    <h2>Check in here</h2>
+    <p>Enter your details. Your stub will be emailed instantly — no account needed.</p>
+
+    <div class="fg">
+      <label class="fl">Your name (optional)</label>
+      <input class="fi" id="fname" type="text" placeholder="First name">
+    </div>
+    <div class="fg">
+      <label class="fl">Email <span class="r">*</span></label>
+      <input class="fi" id="femail" type="email" placeholder="your@email.com">
+    </div>
+    <div class="fg">
+      <label class="fl">Confirm email <span class="r">*</span></label>
+      <input class="fi" id="femail2" type="email" placeholder="your@email.com again">
+      <div class="eerr" id="eerr">Emails don't match</div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="fl">Item type <span class="r">*</span></label>
+        <select class="fs" id="fitem">
+          <option>Bag / Backpack</option>
+          <option>Rolling luggage</option>
+          <option>Bike</option>
+          <option>Coat / Jacket</option>
+          <option>Stroller</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">No. of items <span class="r">*</span></label>
+        <div class="counter">
+          <button class="cbtn" id="bminus" type="button">−</button>
+          <div class="cval" id="cval">1</div>
+          <button class="cbtn" id="bplus" type="button">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <div>
+        <div class="total-lhs">Estimated total due at station</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="tnote">1 × Bag / Backpack × $5</div>
+      </div>
+      <div class="total-num" id="tamt">$5</div>
+    </div>
+
+    <button class="sbtn" id="goBtn" type="button">Email my stub →</button>
+    <p class="priv">Your email is used only for your stub and pickup confirmation. Never shared.</p>
+  </div>
+
+  <div class="succ" id="succ">
+    <div class="slabel">✓ Stub sent — check your inbox</div>
+    <div class="ticket-stub">
+      <div class="ticket-stub-l">
+        <div style="font-family:var(--font-display);font-weight:900;font-size:10px;color:var(--white);text-align:center;text-transform:uppercase;line-height:1.1;margin-bottom:4px">GET<br>CHECKED</div>
+        <div style="font-size:7px;color:var(--muted);font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">NEW YORK, NY</div>
+        <div id="tnum" style="font-family:var(--font-display);font-weight:900;font-size:32px;color:var(--yellow);line-height:1">—</div>
+      </div>
+      <div class="ticket-stub-r">
+        <div class="ticket-label">Claim check</div>
+        <div class="ticket-code" id="tcode">—</div>
+        <div class="ticket-grid">
+          <div><div class="ticket-label">Station</div><div class="ticket-val" id="tstation">—</div></div>
+          <div><div class="ticket-label">Time in</div><div class="ticket-val" id="ttime">—</div></div>
+          <div><div class="ticket-label">Items</div><div class="ticket-val" id="titems">—</div></div>
+          <div><div class="ticket-label">Total due</div><div class="ticket-val" id="ttotal">—</div></div>
+        </div>
+        <div class="ticket-footer">Check your email for your full stub. Screenshot this as backup.</div>
+      </div>
+    </div>
+    <div class="tip"><div class="tip-h">📱 Screenshot this stub</div><div class="tip-b">Your stub has been emailed. Screenshot above as a backup.</div></div>
+    <div id="sperk2"></div>
+  </div>
+
+  <div style="padding:20px;border-top:1px solid var(--border)">
+    <div style="font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Station details</div>
+    <div class="drow"><span class="dk">Address</span><span class="dv" id="daddr">—</span></div>
+    <div class="drow"><span class="dk">Hours</span><span class="dv" id="dhours">—</span></div>
+    <div class="drow"><span class="dk">Accepts</span><span class="dv" id="dpay">—</span></div>
+    <div class="drow"><span class="dk">Cancellations</span><span class="dv">Station closed only. No-shows non-refundable.</span></div>
+    <div id="dcause"></div>
+  </div>
+
+  <div style="padding:0 20px 20px;display:none" id="rev-section">
+    <div style="font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Verified reviews</div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div id="ravg" style="font-family:var(--font-display);font-weight:900;font-size:44px;color:var(--yellow);line-height:1">—</div>
+      <div><div id="rstars" style="font-size:18px;color:var(--yellow)"></div><div id="rcount" style="font-size:12px;color:var(--muted)"></div></div>
+    </div>
+    <div id="rlist"></div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+
+<script>
+// ── Station data (inline — no module dependency) ────────────────────────────
+const STATIONS = {
+  "001":{id:"001",name:"Rudy's Barber Shop",neighborhood:"Lower East Side",address:"147 Orchard St, New York, NY 10002",fee:"$5–$7",feeMin:5,feeMax:7,payment:["cash","venmo"],hours:"Mon–Sat 9AM–7PM",capacity:8,cause:"LES Youth Arts Coalition",perk:"10% off any service with your stub"},
+  "002":{id:"002",name:"La Paloma Bodega",neighborhood:"Lower East Side",address:"203 Ludlow St, New York, NY 10002",fee:"$5",feeMin:5,feeMax:5,payment:["cash","venmo","paypal"],hours:"Daily 7AM–11PM",capacity:6,cause:"Bowery Mission",perk:"Free coffee with any bag drop"},
+  "003":{id:"003",name:"Essex Coffee Co.",neighborhood:"Lower East Side",address:"91 Essex St, New York, NY 10002",fee:"$6",feeMin:6,feeMax:6,payment:["venmo","paypal"],hours:"Mon–Fri 7AM–4PM, Sat–Sun 8AM–5PM",capacity:5,cause:"Lower East Side Girls Club",perk:null},
+  "004":{id:"004",name:"Grand St. Laundry",neighborhood:"Lower East Side",address:"318 Grand St, New York, NY 10002",fee:"$4",feeMin:4,feeMax:4,payment:["cash"],hours:"Daily 8AM–9PM",capacity:10,cause:"Henry Street Settlement",perk:null},
+  "005":{id:"005",name:"Delancey Print Shop",neighborhood:"Lower East Side",address:"27 Delancey St, New York, NY 10002",fee:"$5",feeMin:5,feeMax:5,payment:["venmo","stripe"],hours:"Mon–Fri 9AM–6PM",capacity:4,cause:"Educational Alliance",perk:"Free print with any bag drop"},
+  "006":{id:"006",name:"Barber Shop Levi",neighborhood:"Financial District",address:"11 Broadway at Battery Place, New York, NY 10004",fee:"$5–$7",feeMin:5,feeMax:7,payment:["cash","venmo"],hours:"Mon–Sat 9AM–7PM",capacity:8,cause:null,perk:"20% off your next cut with your stub"}
+};
+
+const PAY = {cash:"Cash",venmo:"Venmo",paypal:"PayPal",stripe:"Stripe",zelle:"Zelle"};
+function badge(m){return`<span class="badge badge-${m==='cash'?'green':m==='venmo'?'blue':'gray'}">${PAY[m]||m}</span>`}
+
+// Get station ID from URL
+const parts = location.pathname.split('/').filter(Boolean);
+const rawId = parts[parts.length-1] || '';
+const id = rawId.replace(/\D/g,'').padStart(3,'0');
+const S = STATIONS[id];
+let cnt = 1;
+
+if (!S) {
+  document.getElementById('nf').style.display = 'block';
+} else {
+  document.getElementById('sr').style.display = 'block';
+  document.getElementById('sid').textContent   = 'Station ' + id;
+  document.getElementById('sname').textContent = S.name;
+  document.getElementById('saddr').textContent = S.address;
+  document.getElementById('shours').textContent= S.hours;
+  document.getElementById('sfee').textContent  = S.fee;
+  document.getElementById('spay').innerHTML    = S.payment.map(badge).join(' ');
+  document.getElementById('daddr').textContent = S.address;
+  document.getElementById('dhours').textContent= S.hours;
+  document.getElementById('dpay').textContent  = S.payment.map(m=>PAY[m]||m).join(', ');
+  document.getElementById('tnum').textContent  = parseInt(id).toString();
+  document.getElementById('tstation').textContent = S.name;
+
+  if (S.perk) {
+    const ph = `<div class="perkbox"><div style="font-size:20px">🎁</div><div><div class="ph">GetChecked Perk</div><div class="pb">Show your stub: <strong style="color:var(--white)">${S.perk}</strong></div></div></div>`;
+    document.getElementById('sperk').innerHTML  = ph;
+    document.getElementById('sperk2').innerHTML = ph;
+  }
+  if (S.cause) {
+    document.getElementById('dcause').innerHTML = `<div class="philbox"><div style="font-family:var(--font-display);font-weight:700;font-size:11px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">♥ 5% Stub</div><div style="font-size:12px;color:#4a8a4a;line-height:1.5">${S.name} pledges 5% to <strong>${S.cause}</strong>.</div></div>`;
+  }
+  calcTotal();
+  loadReviews();
+}
+
+// ── Counter buttons ──────────────────────────────────────────────────────────
+document.getElementById('bminus').addEventListener('click', function() {
+  cnt = Math.max(1, cnt - 1);
+  document.getElementById('cval').textContent = cnt;
+  calcTotal();
+});
+document.getElementById('bplus').addEventListener('click', function() {
+  cnt = Math.min(10, cnt + 1);
+  document.getElementById('cval').textContent = cnt;
+  calcTotal();
+});
+document.getElementById('fitem').addEventListener('change', calcTotal);
+
+function calcTotal() {
+  if (!S) return;
+  const item = document.getElementById('fitem').value;
+  const mn = S.feeMin * cnt, mx = S.feeMax * cnt;
+  const tot = mn===mx ? '$'+mn : '$'+mn+'–$'+mx;
+  const fee = S.feeMin===S.feeMax ? '$'+S.feeMin : '$'+S.feeMin+'–$'+S.feeMax;
+  document.getElementById('tamt').textContent  = tot;
+  document.getElementById('tnote').textContent = cnt+' × '+item+' × '+fee;
+}
+
+// ── Email validation ─────────────────────────────────────────────────────────
+document.getElementById('femail').addEventListener('input', checkMatch);
+document.getElementById('femail2').addEventListener('input', checkMatch);
+function checkMatch() {
+  const e1 = document.getElementById('femail').value;
+  const e2 = document.getElementById('femail2').value;
+  document.getElementById('eerr').style.display = (e2 && e1!==e2) ? 'block' : 'none';
+}
+
+// ── Submit ───────────────────────────────────────────────────────────────────
+document.getElementById('goBtn').addEventListener('click', async function() {
+  const name   = document.getElementById('fname').value.trim();
+  const email  = document.getElementById('femail').value.trim();
+  const email2 = document.getElementById('femail2').value.trim();
+  const item   = document.getElementById('fitem').value;
+
+  if (!email)  { document.getElementById('femail').focus(); return; }
+  if (!email2) { document.getElementById('femail2').focus(); return; }
+  if (email !== email2) { document.getElementById('eerr').style.display='block'; return; }
+
+  const btn = document.getElementById('goBtn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch('/.netlify/functions/send-email', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        type:'checkin', name, email,
+        stationId:id, stationName:S.name,
+        stationAddress:S.address, stationHours:S.hours,
+        stationPayment:S.payment,
+        itemType:item, itemCount:cnt,
+        feeMin:S.feeMin, feeMax:S.feeMax,
+        perk:S.perk||null, cause:S.cause||null
+      })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error||'Error');
+
+    const now = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+    const mn = S.feeMin*cnt, mx = S.feeMax*cnt;
+    document.getElementById('tcode').textContent  = data.claimCode;
+    document.getElementById('ttime').textContent  = now;
+    document.getElementById('titems').textContent = cnt+' × '+item;
+    document.getElementById('ttotal').textContent = mn===mx ? '$'+mn : '$'+mn+'–$'+mx;
+
+    document.getElementById('fwrap').style.display = 'none';
+    document.getElementById('succ').style.display  = 'block';
+    document.getElementById('succ').scrollIntoView({behavior:'smooth',block:'start'});
+  } catch(e) {
+    btn.disabled = false; btn.textContent = 'Email my stub →';
+    alert('Something went wrong — please try again.');
+    console.error(e);
+  }
+});
+
+// ── Reviews ──────────────────────────────────────────────────────────────────
+async function loadReviews() {
+  try {
+    const res  = await fetch('/.netlify/functions/get-reviews?stationId='+id);
+    const data = await res.json();
+    if (!data.ok || data.count===0) return;
+    document.getElementById('rev-section').style.display = 'block';
+    document.getElementById('ravg').textContent   = data.average;
+    document.getElementById('rstars').textContent = '★'.repeat(Math.round(data.average))+'☆'.repeat(5-Math.round(data.average));
+    document.getElementById('rcount').textContent = data.count+' verified review'+(data.count!==1?'s':'');
+    document.getElementById('rlist').innerHTML = data.reviews.map(r=>
+      `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="color:var(--yellow);font-size:13px;margin-bottom:3px">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+        ${r.comment?`<div style="font-size:13px;color:var(--dim);line-height:1.5">${r.comment}</div>`:''}
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
+      </div>`
+    ).join('');
+  } catch(e){}
+}
+
+// ── Nav / Footer ─────────────────────────────────────────────────────────────
+fetch('/lib/gc.js').then(()=>{}).catch(()=>{});
+(async()=>{
+  try {
+    const m = await import('/lib/gc.js');
+    document.getElementById('nav-root').innerHTML    = m.renderNav();
+    document.getElementById('footer-root').innerHTML = m.renderFooter();
+  } catch(e){}
+})();
+</script>
+</body>
+</html>

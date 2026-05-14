@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Station — GetChecked NYC</title>
+  <meta name="description" content="Find a GetChecked luggage storage station near you in New York City.">
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    .page-hero { padding: 48px 24px 32px; border-bottom: 1px solid var(--border); }
+    .page-hero h1 { font-size: clamp(40px, 8vw, 72px); margin-bottom: 10px; }
+    .page-hero h1 em { color: var(--yellow); font-style: normal; }
+    .page-hero p { font-size: 15px; color: var(--dim); max-width: 480px; line-height: 1.6; }
+
+    .filter-bar {
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    }
+    .filter-btn {
+      font-family: var(--font-display); font-weight: 700; font-size: 12px;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 7px 14px; border-radius: 20px; cursor: pointer;
+      border: 1px solid var(--border); background: transparent; color: var(--dim);
+      transition: all .15s;
+    }
+    .filter-btn.active { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .filter-btn:hover:not(.active) { border-color: var(--dim); color: var(--white); }
+
+    .stations-list { padding: 24px; }
+    .station-card {
+      background: var(--off); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 20px 22px;
+      margin-bottom: 12px; display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px; align-items: start;
+      transition: border-color .15s;
+      text-decoration: none; color: inherit;
+      display: block;
+    }
+    .station-card:hover { border-color: var(--yellow); }
+    .station-card-inner { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+    .s-id { font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--yellow); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 5px; }
+    .s-name { font-family: var(--font-display); font-weight: 900; font-size: 22px; text-transform: uppercase; line-height: 1.1; margin-bottom: 4px; }
+    .s-neighborhood { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .s-address { font-size: 13px; color: var(--dim); margin-bottom: 10px; }
+    .s-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+    .s-hours { font-size: 12px; color: var(--muted); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .s-fee { font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--yellow); line-height: 1; text-align: right; }
+    .s-fee-label { font-size: 10px; color: var(--muted); text-align: right; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .s-payment { display: flex; gap: 5px; flex-wrap: wrap; }
+    .s-cause { font-size: 11px; color: #4a8a4a; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-top: 8px; }
+    .s-cta { margin-top: 14px; }
+    .pilot-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #0a2010; border: 1px solid #1a4020;
+      border-radius: 20px; padding: 5px 12px;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 11px; color: var(--green); text-transform: uppercase; letter-spacing: .08em;
+      margin-bottom: 20px;
+    }
+    .pilot-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .empty { padding: 60px 24px; text-align: center; color: var(--muted); }
+    .empty-h { font-family: var(--font-display); font-weight: 900; font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
+
+    @media (max-width: 480px) {
+      .station-card-inner { grid-template-columns: 1fr; }
+      .s-fee { text-align: left; }
+      .s-fee-label { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-root"></div>
+
+<section class="page-hero">
+  <div class="label" style="margin-bottom:12px;display:flex;align-items:center;gap:8px">
+    <span style="display:inline-block;width:20px;height:2px;background:var(--yellow)"></span>
+    Station finder
+  </div>
+  <h1 class="display">Find a station<br><em>near you.</em></h1>
+  <p>All GetChecked stations are vetted neighborhood businesses. You pay the shop directly — cash, Venmo, or card. No app needed.</p>
+</section>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterStations('all', this)">All stations</button>
+  <button class="filter-btn" onclick="filterStations('fidi', this)">Financial District</button>
+  <button class="filter-btn" onclick="filterStations('les', this)">Lower East Side</button>
+  <button class="filter-btn" onclick="filterStations('cash', this)">Accepts cash</button>
+  <button class="filter-btn" onclick="filterStations('venmo', this)">Accepts Venmo</button>
+  <button class="filter-btn" onclick="filterStations('perks', this)">🎁 Has perks</button>
+</div>
+
+<div class="stations-list" id="stations-list">
+  <!-- rendered by JS -->
+</div>
+
+<div style="border-top:1px solid var(--border);padding:32px 24px;text-align:center;background:var(--off)">
+  <div class="pilot-badge"><span class="pilot-dot"></span>Pilot network — expanding soon</div>
+  <p style="font-size:14px;color:var(--muted);max-width:400px;margin:0 auto 20px;line-height:1.6">GetChecked is currently piloting in Lower Manhattan and the Lower East Side. More neighborhoods coming soon.</p>
+  <a href="/partner" class="btn btn-outline" style="font-size:13px">Own a shop? Become a station →</a>
+</div>
+
+<footer style="border-top:1px solid var(--border);padding:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+  <div style="font-family:var(--font-display);font-weight:700;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">getchecked.co — New York, NY</div>
+  <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Secure storage. So you can enjoy New York.</div>
+</footer>
+<div id="footer-root"></div>
+
+<script type="module">
+import { STATIONS, paymentBadges, renderNav, renderFooter } from '/lib/gc.js';
+
+document.getElementById('nav-root').innerHTML = renderNav('map');
+document.getElementById('footer-root').innerHTML = renderFooter();
+
+let currentFilter = 'all';
+
+function renderStations(filter) {
+  const list = document.getElementById('stations-list');
+  const all  = Object.values(STATIONS);
+
+  const filtered = all.filter(s => {
+    if (filter === 'all')   return s.active;
+    if (filter === 'fidi')  return s.neighborhood === 'Financial District';
+    if (filter === 'les')   return s.neighborhood === 'Lower East Side';
+    if (filter === 'cash')  return s.payment.includes('cash');
+    if (filter === 'venmo') return s.payment.includes('venmo');
+    if (filter === 'perks') return s.perk;
+    return s.active;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty"><div class="empty-h">No stations found</div><p>Try a different filter.</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(s => `
+    <a class="station-card" href="/s/${s.id}">
+      <div class="station-card-inner">
+        <div>
+          <div class="s-id">Station ${s.id}</div>
+          <div class="s-name">${s.name}</div>
+          <div class="s-neighborhood">${s.neighborhood}</div>
+          <div class="s-address">${s.address}</div>
+          <div class="s-meta">
+            <span class="badge badge-green" style="display:inline-flex;align-items:center;gap:4px">
+              <span style="width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block"></span>
+              Open
+            </span>
+            <span class="s-hours">${s.hours}</span>
+          </div>
+          <div class="s-payment">${paymentBadges(s.payment)}</div>
+          ${s.cause ? `<div class="s-cause">♥ 5% → ${s.cause}</div>` : ''}
+          ${s.perk ? `<div style="margin-top:8px;display:flex;align-items:center;gap:6px;font-size:12px;color:#FFD700;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.06em">🎁 ${s.perk}</div>` : ''}
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div class="s-fee">${s.fee}</div>
+          <div class="s-fee-label">per item</div>
+          <div class="s-cta">
+            <span class="btn btn-primary" style="font-size:12px;padding:8px 14px;margin-top:12px;display:inline-block">
+              Check in →
+            </span>
+          </div>
+        </div>
+      </div>
+    </a>
+  `).join('');
+}
+
+window.filterStations = function(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStations(filter);
+};
+
+renderStations('all');
+</script>
+</body>
+</html>

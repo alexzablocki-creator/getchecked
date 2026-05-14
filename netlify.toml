@@ -1,0 +1,80 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/s/:id"
+  to = "/s/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard/:id"
+  to = "/dashboard/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/nyc"
+  to = "/nyc/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/partner"
+  to = "/partner/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/partner/thanks"
+  to = "/partner/thanks/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/faq"
+  to = "/faq/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/kit/:id"
+  to = "/kit/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/cities/miami"
+  to = "/cities/miami/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/cities/miami/thanks"
+  to = "/cities/miami/thanks/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/cities/la"
+  to = "/cities/la/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/cities/la/thanks"
+  to = "/cities/la/thanks/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/perks"
+  to = "/perks/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/review"
+  to = "/review/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/pickup"
+  to = "/pickup/index.html"
+  status = 200

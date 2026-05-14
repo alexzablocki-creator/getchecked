@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — GetChecked</title>
+  <meta name="description" content="How GetChecked works — luggage storage at NYC neighborhood businesses.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    .faq-hero { padding: 56px 24px 40px; border-bottom: 1px solid var(--border); max-width: 760px; }
+    .faq-hero h1 { font-size: clamp(40px, 8vw, 72px); margin-bottom: 10px; }
+    .faq-section { padding: 32px 24px; max-width: 720px; }
+    .faq-section h2 { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--yellow); margin-bottom: 20px; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 18px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .faq-q:hover { color: var(--yellow); }
+    .faq-toggle { font-size: 20px; color: var(--yellow); flex-shrink: 0; transition: transform .2s; }
+    .faq-a { font-size: 14px; color: var(--dim); line-height: 1.7; margin-top: 12px; display: none; }
+    .faq-a.open { display: block; }
+    .faq-toggle.open { transform: rotate(45deg); }
+  </style>
+</head>
+<body>
+<div id="nav-root"></div>
+
+<section class="faq-hero">
+  <div class="label" style="margin-bottom:12px;display:flex;align-items:center;gap:8px">
+    <span style="display:inline-block;width:20px;height:2px;background:var(--yellow)"></span>
+    Frequently asked questions
+  </div>
+  <h1 class="display">How it works</h1>
+</section>
+
+<div class="faq-section">
+  <h2>For customers</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">What is GetChecked? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">GetChecked is a luggage and bag storage network built on top of vetted neighborhood businesses in New York City. Think of it as a coat-check for the city — drop your bags at a local shop, explore hands-free, and pick them up when you're ready.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">How do I check in? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Find a station on the map at getchecked.co/nyc, or scan the yellow QR sticker on the shop window. Enter the station ID, get your digital stub, and show it to the shop owner when you arrive. That's it.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">How do I pay? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Payment goes directly to the shop — not to GetChecked. Each station sets its own price and accepts its own payment methods (cash, Venmo, PayPal, or card). Check the station page before you go so you know what to bring.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">Is my stuff safe? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">All GetChecked stations are vetted neighborhood businesses. Your items are covered by GetChecked item protection during storage. We recommend keeping valuables like passports and electronics with you.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">Can I cancel my reservation? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Reservations can only be cancelled if the station is unexpectedly closed on your date. No-shows are non-refundable — the shop keeps any payment made. Since you pay the shop directly, cancellation disputes are handled with the shop owner.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">Do I need to download an app? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">No app needed. Everything runs in your phone's browser. Scan the QR code, get your stub, show it in-store. Done.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">What is the 5% Stub? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Every GetChecked station pledges 5% of their storage revenue to a neighborhood cause of their choice — a youth program, a shelter, a school. It's displayed on their station page. GetChecked never handles that money; stations self-direct their pledge.</div>
+  </div>
+</div>
+
+<div class="faq-section" style="border-top:1px solid var(--border)">
+  <h2>For business owners</h2>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">How much does it cost to join? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Pilot stations are completely free to join. After the pilot phase, GetChecked charges a flat annual license fee. We never take a percentage of your revenue.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">How does the dashboard work? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Your dashboard is a webpage you bookmark on your phone — no app download. When a customer arrives, they show their claim stub. You enter the code and swipe to confirm. When they return, swipe to release. That's your entire workflow.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">Am I liable if something goes wrong? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">GetChecked provides item protection insurance that covers customer belongings during storage. You are not liable for item loss under normal circumstances. You are responsible for basic reasonable care of stored items.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">Can I set my own price and hours? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Yes — completely. You set the price, the hours, and what payment you accept. GetChecked provides the platform and the customers. The business is yours.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggle(this)">How do I apply? <span class="faq-toggle">+</span></div>
+    <div class="faq-a">Visit getchecked.co/partner and fill out the short application form. We'll be in touch within 48 hours with your station kit — QR sticker, window decal, and counter sign.</div>
+  </div>
+</div>
+
+<div style="padding:32px 24px;border-top:1px solid var(--border);max-width:720px">
+  <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Still have questions?</p>
+  <a href="mailto:hello@getchecked.co" class="btn btn-outline" style="font-size:13px">hello@getchecked.co</a>
+</div>
+
+<div id="footer-root"></div>
+
+<script type="module">
+import { renderNav, renderFooter } from '/lib/gc.js';
+document.getElementById('nav-root').innerHTML    = renderNav('faq');
+document.getElementById('footer-root').innerHTML = renderFooter();
+
+window.toggle = function(el) {
+  const a = el.nextElementSibling;
+  const t = el.querySelector('.faq-toggle');
+  a.classList.toggle('open');
+  t.classList.toggle('open');
+};
+</script>
+</body>
+</html>

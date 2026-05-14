@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a GetChecked Station — getchecked.co/partner</title>
+  <meta name="description" content="Turn unused space in your shop into passive revenue. Join the GetChecked station network in NYC.">
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    .partner-hero { padding: 64px 24px 48px; max-width: 760px; }
+    .partner-hero h1 { font-size: clamp(48px, 9vw, 80px); margin-bottom: 18px; }
+    .partner-hero h1 em { color: var(--yellow); font-style: normal; }
+    .partner-hero p { font-size: 17px; color: var(--dim); line-height: 1.65; max-width: 480px; margin-bottom: 32px; }
+
+    .pitch-strip {
+      background: var(--off); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 40px 24px;
+    }
+    .pitch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 860px; align-items: start; }
+    .yield-box {
+      background: #141400; border: 1px solid #2a2800;
+      border-radius: var(--radius-lg); padding: 28px;
+    }
+    .yield-num { font-family: var(--font-display); font-weight: 900; font-size: 64px; color: var(--yellow); line-height: 1; margin-bottom: 4px; }
+    .yield-label { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+    .yield-breakdown { border-top: 1px solid #2a2800; padding-top: 16px; }
+    .yield-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; color: var(--dim); }
+    .yield-row strong { color: var(--yellow); font-family: var(--font-display); font-weight: 700; }
+    .slider-label { font-size: 12px; color: var(--muted); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; margin-top: 16px; }
+    input[type=range] { width: 100%; accent-color: var(--yellow); }
+
+    .pitch-right h2 { font-family: var(--font-display); font-weight: 900; font-size: 32px; text-transform: uppercase; margin-bottom: 16px; line-height: 1; }
+    .pitch-right h2 em { color: var(--yellow); font-style: normal; }
+    .pitch-body { font-size: 15px; color: var(--dim); line-height: 1.7; margin-bottom: 20px; }
+
+    .how-steps { counter-reset: steps; margin-top: 32px; }
+    .how-step {
+      display: flex; gap: 18px; padding: 20px 0;
+      border-bottom: 1px solid var(--border); align-items: flex-start;
+    }
+    .how-step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: var(--font-display); font-weight: 900; font-size: 32px;
+      color: var(--yellow); min-width: 36px; line-height: 1;
+    }
+    .step-content h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-transform: uppercase; margin-bottom: 5px; }
+    .step-content p { font-size: 13px; color: var(--dim); line-height: 1.6; }
+
+    .rules-section { padding: 40px 24px; }
+    .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 20px; max-width: 860px; }
+    .rule-card { background: var(--off); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; }
+    .rule-icon { font-size: 22px; margin-bottom: 8px; }
+    .rule-head { font-family: var(--font-display); font-weight: 700; font-size: 14px; text-transform: uppercase; margin-bottom: 6px; }
+    .rule-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    .payment-section { padding: 0 24px 40px; }
+    .payment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 16px; max-width: 700px; }
+    .pay-card { background: var(--off); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; text-align: center; }
+    .pay-name { font-family: var(--font-display); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .pay-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    .phil-section { padding: 0 24px 40px; }
+
+    .apply-section {
+      background: var(--yellow); padding: 56px 24px; text-align: center;
+    }
+    .apply-section h2 { font-family: var(--font-display); font-weight: 900; font-size: clamp(36px, 7vw, 64px); text-transform: uppercase; color: var(--black); line-height: .95; margin-bottom: 16px; }
+    .apply-section p { font-size: 16px; color: #333; max-width: 420px; margin: 0 auto 32px; line-height: 1.6; }
+    .apply-form { max-width: 480px; margin: 0 auto; }
+    .form-field { margin-bottom: 12px; text-align: left; }
+    .form-label { font-family: var(--font-display); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #444; display: block; margin-bottom: 5px; }
+    .form-input {
+      width: 100%; background: #fff; border: 1.5px solid #ccc;
+      border-radius: var(--radius-sm); padding: 11px 14px;
+      font-family: var(--font-body); font-size: 15px; color: var(--black);
+      outline: none; transition: border-color .15s;
+    }
+    .form-input:focus { border-color: var(--black); }
+    .form-select {
+      width: 100%; background: #fff; border: 1.5px solid #ccc;
+      border-radius: var(--radius-sm); padding: 11px 14px;
+      font-family: var(--font-body); font-size: 15px; color: var(--black);
+      outline: none; appearance: none;
+    }
+    .submit-btn {
+      width: 100%; background: var(--black); color: var(--yellow);
+      font-family: var(--font-display); font-weight: 900; font-size: 18px;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 16px; border: none; border-radius: var(--radius-sm);
+      cursor: pointer; margin-top: 8px; transition: opacity .15s;
+    }
+    .submit-btn:hover { opacity: .85; }
+    .form-note { font-size: 12px; color: #666; margin-top: 10px; text-align: center; line-height: 1.5; }
+    .success-msg { display: none; background: var(--black); color: var(--yellow); padding: 24px; border-radius: var(--radius-md); text-align: center; }
+    .success-msg h3 { font-family: var(--font-display); font-weight: 900; font-size: 28px; text-transform: uppercase; margin-bottom: 8px; }
+    .success-msg p { font-size: 14px; color: var(--dim); }
+
+    @media (max-width: 640px) {
+      .pitch-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-root"></div>
+
+<section class="partner-hero">
+  <div class="label" style="margin-bottom:14px;display:flex;align-items:center;gap:8px">
+    <span style="display:inline-block;width:20px;height:2px;background:var(--yellow)"></span>
+    For business owners
+  </div>
+  <h1 class="display">Your space.<br><em>Your money.</em></h1>
+  <p>That corner of your shop is already paid for. Right now it earns $0. GetChecked turns it into a passive revenue stream — no extra staff, no extra hours, no middleman taking a cut.</p>
+  <a href="#apply" class="btn btn-primary" style="font-size:16px;padding:14px 28px">Apply to be a pilot station</a>
+</section>
+
+<section class="pitch-strip">
+  <div class="pitch-grid">
+    <div>
+      <div class="yield-box">
+        <div class="label" style="margin-bottom:6px">Your annual yield</div>
+        <div class="yield-num" id="yield-num">$7,300</div>
+        <div class="yield-label">based on your inputs below</div>
+        <div class="slider-label">Avg bags per day: <span id="bags-out" style="color:var(--yellow)">10</span></div>
+        <input type="range" min="2" max="25" value="10" id="bags-slider" oninput="calcYield()">
+        <div class="slider-label" style="margin-top:12px">Your fee per bag: $<span id="fee-out" style="color:var(--yellow)">6</span></div>
+        <input type="range" min="3" max="15" value="6" id="fee-slider" oninput="calcYield()">
+        <div class="yield-breakdown">
+          <div class="yield-row"><span>Daily revenue</span><strong id="daily-rev">$60</strong></div>
+          <div class="yield-row"><span>Monthly revenue</span><strong id="monthly-rev">$1,825</strong></div>
+          <div class="yield-row"><span>Annual revenue</span><strong id="annual-rev">$21,900</strong></div>
+          <div class="yield-row" style="border-top:1px solid #2a2800;margin-top:6px;padding-top:10px"><span>5% Stub (your cause)</span><strong id="stub-amt" style="color:var(--green)">$1,095</strong></div>
+          <div class="yield-row"><span>GetChecked license</span><strong style="color:var(--dim)">$0 pilot</strong></div>
+          <div class="yield-row" style="font-size:15px"><span style="color:var(--white)">You keep</span><strong id="you-keep" style="font-size:18px">$20,805</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pitch-right">
+      <h2>Found money.<br><em>Zero extra labor.</em></h2>
+      <p class="pitch-body">Customers drop bags, pay you directly — cash, Venmo, PayPal, whatever you already use. You confirm with a swipe on your phone. That's it. GetChecked handles the platform, the marketing, and item insurance for your customers.</p>
+      <p class="pitch-body">We don't take a percentage. We don't touch your money. After the pilot we charge a flat annual license — your revenue is yours.</p>
+
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h3>Apply & get your kit</h3>
+            <p>Fill out the form below. We mail your station kit — window sticker, QR code, counter sign. Free during the pilot.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h3>Set your price</h3>
+            <p>You decide what to charge. $5, $7, $10 — your call. You set the hours and what payment you accept.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h3>Go live on the map</h3>
+            <p>Your station appears on getchecked.co/nyc. Customers find you, book, and show up with a digital stub.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h3>Swipe to confirm & release</h3>
+            <p>Customer arrives, shows stub on their phone. You swipe right to confirm drop-off. Swipe again when they return. That's your entire workflow.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rules-section">
+  <div class="label" style="margin-bottom:8px">The rules</div>
+  <h2 class="display" style="font-size:32px;margin-bottom:4px">Simple and fair</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:4px">No surprises. No fine print.</p>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-icon">💰</div>
+      <div class="rule-head">You keep 100%</div>
+      <div class="rule-body">GetChecked never takes a cut of your revenue. Pilot stations pay $0. Post-pilot is a flat annual license.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">📵</div>
+      <div class="rule-head">No cancellations</div>
+      <div class="rule-body">Customers can't cancel once booked unless your station is closed that day. No-shows are non-refundable — you keep the payment.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">🛡️</div>
+      <div class="rule-head">Item insurance</div>
+      <div class="rule-body">GetChecked provides item protection insurance covering customer belongings during storage. You are not liable for item loss.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">📱</div>
+      <div class="rule-head">No app needed</div>
+      <div class="rule-body">Your dashboard is a bookmark on your phone at getchecked.co/dashboard/[your ID]. No download, no login hassle.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">🚪</div>
+      <div class="rule-head">Cancel anytime</div>
+      <div class="rule-body">Pilot stations can leave anytime. No contracts. We just ask for 7 days notice so we can notify any upcoming bookings.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">💚</div>
+      <div class="rule-head">5% Stub</div>
+      <div class="rule-body">Pledge 5% of your storage revenue to a neighborhood cause you choose. We display it on your station page — good for your community and your reputation.</div>
+    </div>
+  </div>
+</section>
+
+<section class="payment-section">
+  <div class="label" style="margin-bottom:8px">Payment you can accept</div>
+  <h2 class="display" style="font-size:28px;margin-bottom:4px">Your money, your way</h2>
+  <p style="font-size:14px;color:var(--muted)">GetChecked never processes payments. Customers pay you directly using whatever you already use.</p>
+  <div class="payment-grid">
+    <div class="pay-card"><div class="pay-name">Cash</div><div class="pay-note">Zero setup. Works for everyone.</div></div>
+    <div class="pay-card"><div class="pay-name">Venmo</div><div class="pay-note">Show your @handle. Customer pays instantly.</div></div>
+    <div class="pay-card"><div class="pay-name">PayPal</div><div class="pay-note">QR link or username. Good for tourists.</div></div>
+    <div class="pay-card"><div class="pay-name">Zelle</div><div class="pay-note">Bank to bank. Great for regulars.</div></div>
+    <div class="pay-card"><div class="pay-name">Stripe</div><div class="pay-note">Card payments. Requires setup.</div></div>
+  </div>
+</section>
+
+<section class="phil-section">
+  <div class="phil-strip">
+    <div style="font-family:var(--font-display);font-weight:900;font-size:22px;text-transform:uppercase;color:var(--green);margin-bottom:8px">♥ The 5% Stub</div>
+    <p style="font-size:14px;color:#4a8a4a;line-height:1.6;max-width:560px;margin-bottom:0">Every station pledges 5% of storage revenue to a neighborhood cause they name. You choose the cause — a youth program, a shelter, a school. We put it on your station page so every customer knows. It costs you almost nothing and means everything to the neighborhood.</p>
+  </div>
+</section>
+
+<section class="apply-section" id="apply">
+  <h2>Ready to get checked?</h2>
+  <p>Pilot stations are free to join. Fill out the form and we'll be in touch within 48 hours with your station kit.</p>
+
+  <div class="apply-form">
+    <form name="station-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/partner/thanks">
+      <input type="hidden" name="form-name" value="station-application">
+      <p style="display:none"><input name="bot-field"></p>
+      <div class="form-field">
+        <label class="form-label">Your name</label>
+        <input class="form-input" name="name" type="text" placeholder="First and last name" required>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Business name</label>
+        <input class="form-input" name="business" type="text" placeholder="Your shop name" required>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Address</label>
+        <input class="form-input" name="address" type="text" placeholder="Street address, NYC">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email</label>
+        <input class="form-input" name="email" type="email" placeholder="your@email.com" required>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Phone</label>
+        <input class="form-input" name="phone" type="tel" placeholder="(212) 555-0100">
+      </div>
+      <div class="form-field">
+        <label class="form-label">How will you accept payment?</label>
+        <select class="form-select" name="payment">
+          <option value="">Select one</option>
+          <option>Cash only</option>
+          <option>Cash + Venmo</option>
+          <option>Cash + Venmo + PayPal</option>
+          <option>Venmo only</option>
+          <option>Stripe / card</option>
+          <option>Multiple — I'll specify</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">What neighborhood cause would you support with your 5%? (optional)</label>
+        <input class="form-input" name="cause" type="text" placeholder="e.g. LES Youth Arts Coalition">
+      </div>
+      <div class="form-field">
+        <label class="form-label">GetChecked Perk — exclusive offer for checked customers (optional)</label>
+        <input class="form-input" name="perk" type="text" placeholder="e.g. 20% off your next cut with your stub">
+        <div style="font-size:11px;color:#666;margin-top:5px;line-height:1.5">Perks drive foot traffic. Checked customers become your customers.</div>
+      </div>
+      <button type="submit" class="submit-btn">Apply to be a station →</button>
+      <p class="form-note">No contracts. No fees during the pilot. We'll reach out within 48 hours.</p>
+    </form>
+  </div>
+</section>
+
+<div id="footer-root"></div>
+
+<script type="module">
+import { renderNav, renderFooter } from '/lib/gc.js';
+document.getElementById('nav-root').innerHTML    = renderNav('partner');
+document.getElementById('footer-root').innerHTML = renderFooter();
+
+window.calcYield = function() {
+  const bags = parseInt(document.getElementById('bags-slider').value);
+  const fee  = parseInt(document.getElementById('fee-slider').value);
+  document.getElementById('bags-out').textContent = bags;
+  document.getElementById('fee-out').textContent  = fee;
+  const daily   = bags * fee;
+  const annual  = daily * 365;
+  const stub    = Math.round(annual * 0.05);
+  const keep    = annual - stub;
+  document.getElementById('daily-rev').textContent   = '$' + daily.toLocaleString();
+  document.getElementById('monthly-rev').textContent = '$' + Math.round(annual/12).toLocaleString();
+  document.getElementById('annual-rev').textContent  = '$' + annual.toLocaleString();
+  document.getElementById('stub-amt').textContent    = '$' + stub.toLocaleString();
+  document.getElementById('you-keep').textContent    = '$' + keep.toLocaleString();
+  document.getElementById('yield-num').textContent   = '$' + keep.toLocaleString();
+};
+</script>
+</body>
+</html>

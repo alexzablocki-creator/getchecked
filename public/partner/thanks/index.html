@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application received — GetChecked</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/global.css">
+</head>
+<body>
+<div id="nav-root"></div>
+<div style="padding:80px 24px;text-align:center;max-width:560px;margin:0 auto">
+  <div style="font-size:48px;margin-bottom:20px">✓</div>
+  <h1 class="display" style="font-size:48px;color:var(--yellow);margin-bottom:16px">You're in the queue.</h1>
+  <p style="font-size:16px;color:var(--dim);line-height:1.7;margin-bottom:32px">We'll be in touch within 48 hours with your station kit and onboarding details. Welcome to GetChecked.</p>
+  <a href="/" class="btn btn-primary">Back to home</a>
+</div>
+<div id="footer-root"></div>
+<script type="module">
+import { renderNav, renderFooter } from '/lib/gc.js';
+document.getElementById('nav-root').innerHTML    = renderNav();
+document.getElementById('footer-root').innerHTML = renderFooter();
+</script>
+</body>
+</html>

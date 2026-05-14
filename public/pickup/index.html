@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pick up your items — GetChecked</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/global.css">
+</head>
+<body>
+<div id="nav-root"></div>
+<div style="max-width:480px;margin:0 auto;padding:40px 24px;text-align:center">
+  <div class="label" style="margin-bottom:12px;justify-content:center;display:flex;align-items:center;gap:8px">
+    <span style="display:inline-block;width:20px;height:2px;background:var(--yellow)"></span>
+    Ready to pick up
+  </div>
+  <h1 class="display" style="font-size:48px;margin-bottom:16px">Show this<br><span style="color:var(--yellow)">to the owner</span></h1>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6">Walk in and show your claim code. The owner will release your items from their dashboard.</p>
+  <div style="background:#111;border:2px solid var(--yellow);border-radius:8px;padding:28px;margin-bottom:20px">
+    <div class="label" style="margin-bottom:8px">Your claim code</div>
+    <div id="claim-display" style="font-family:var(--font-display);font-weight:900;font-size:56px;color:var(--yellow);letter-spacing:0.06em;line-height:1;margin-bottom:8px">—</div>
+    <div id="station-display" style="font-size:13px;color:var(--muted)"></div>
+  </div>
+  <div style="background:var(--yellow);border-radius:6px;padding:14px 20px;margin-bottom:24px">
+    <div style="font-family:var(--font-display);font-weight:900;font-size:15px;text-transform:uppercase;color:var(--black)">👆 Show this screen to the shop owner</div>
+  </div>
+  <a href="/" class="btn btn-outline" style="font-size:13px">Back to GetChecked</a>
+</div>
+<div id="footer-root"></div>
+<script type="module">
+import { STATIONS, renderNav, renderFooter } from '/lib/gc.js';
+document.getElementById('nav-root').innerHTML    = renderNav();
+document.getElementById('footer-root').innerHTML = renderFooter();
+const p = new URLSearchParams(location.search);
+const code    = p.get('code') || '—';
+const sid     = (p.get('station') || '').padStart(3,'0');
+const station = STATIONS[sid];
+document.getElementById('claim-display').textContent  = code;
+document.getElementById('station-display').textContent = station ? station.name + ' · ' + station.address : '';
+</script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GetChecked Los Angeles — Coming Soon</title>
+  <meta name="description" content="GetChecked is coming to Los Angeles. Drop your bags. Keep exploring.">
+  <meta property="og:title" content="GetChecked Los Angeles — Coming Soon">
+  <meta property="og:description" content="Secure storage so you can enjoy LA. Launching soon.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --asphalt:  #1C1C1C;
+      --concrete: #B7B7B7;
+      --gold:     #FFB400;
+      --pacific:  #245B7A;
+      --palm:     #2E7D6B;
+      --offwhite: #F2EFE8;
+      --white:    #FFFFFF;
+      --font-d:   'Barlow Condensed', sans-serif;
+      --font-b:   'Barlow', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-b); background: var(--asphalt); color: var(--white); min-height: 100vh; overflow-x: hidden; }
+
+    /* ── Nav ── */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px; border-bottom: 1px solid #2a2a2a;
+      background: var(--asphalt); position: sticky; top: 0; z-index: 100;
+    }
+    .stub-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .stub-icon { display: flex; align-items: stretch; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 5px; overflow: hidden; height: 40px; }
+    .stub-icon-left { padding: 5px 8px; display: flex; flex-direction: column; justify-content: center; }
+    .stub-icon-left span { font-family: var(--font-d); font-weight: 900; font-size: 9px; color: var(--white); text-transform: uppercase; line-height: 1.1; }
+    .stub-icon-left small { font-family: var(--font-d); font-size: 7px; color: #555; text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; display: block; }
+    .stub-icon-perf { width: 6px; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 4px 0; background: #2a2a2a; }
+    .stub-icon-perf span { width: 3px; height: 3px; background: var(--asphalt); border-radius: 50%; display: block; }
+    .stub-icon-right { padding: 4px 8px; display: flex; align-items: center; background: #2a2a2a; }
+    .stub-icon-right span { font-family: var(--font-d); font-weight: 900; font-size: 20px; color: var(--gold); line-height: 1; }
+    .stub-wordmark { font-family: var(--font-d); font-weight: 900; font-size: 20px; letter-spacing: .04em; text-transform: uppercase; color: var(--white); }
+    .nav-back { font-family: var(--font-d); font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #888; text-decoration: none; border: 1px solid #333; border-radius: 4px; padding: 7px 14px; }
+    .nav-back:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 72vh; display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 60px 32px 56px;
+      position: relative; overflow: hidden;
+      background: linear-gradient(160deg, #1C1C1C 0%, #0d1a24 50%, #1a0d00 100%);
+    }
+    .hero-sunset {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+      background: linear-gradient(to top, rgba(255,180,0,.15) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .hero-grid-lines {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      opacity: .04; pointer-events: none;
+      background-image: repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 60px),
+                        repeating-linear-gradient(90deg, #fff 0px, #fff 1px, transparent 1px, transparent 60px);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-d); font-weight: 700; font-size: 13px;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px; position: relative;
+    }
+    .hero-eyebrow::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--gold); }
+    .hero h1 {
+      font-family: var(--font-d); font-weight: 900;
+      font-size: clamp(56px, 11vw, 108px);
+      line-height: .9; text-transform: uppercase; color: var(--white);
+      margin-bottom: 20px; position: relative;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero-sub { font-size: 18px; color: #888; max-width: 420px; line-height: 1.6; margin-bottom: 36px; position: relative; }
+
+    /* ── LA monogram ── */
+    .la-mono {
+      position: absolute; right: 48px; top: 50%; transform: translateY(-50%);
+      font-family: var(--font-d); font-weight: 900; font-size: clamp(120px, 18vw, 220px);
+      color: rgba(255,180,0,.06); line-height: 1; pointer-events: none; user-select: none;
+      letter-spacing: -.02em;
+    }
+
+    /* ── Coming soon badge ── */
+    .cs-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--gold); color: var(--asphalt);
+      font-family: var(--font-d); font-weight: 900; font-size: 14px;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: 10px 20px; border-radius: 4px; margin-bottom: 24px; position: relative;
+    }
+    .cs-dot { width: 8px; height: 8px; background: var(--asphalt); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── Notify form ── */
+    .notify-form { display: flex; gap: 10px; max-width: 440px; flex-wrap: wrap; position: relative; }
+    .notify-input {
+      flex: 1; min-width: 200px; background: rgba(255,255,255,.06);
+      border: 1.5px solid #333; border-radius: 4px;
+      padding: 12px 16px; color: var(--white); font-family: var(--font-b);
+      font-size: 15px; outline: none;
+    }
+    .notify-input::placeholder { color: #555; }
+    .notify-input:focus { border-color: var(--gold); }
+    .notify-btn {
+      background: var(--gold); color: var(--asphalt); font-family: var(--font-d);
+      font-weight: 900; font-size: 14px; letter-spacing: .08em; text-transform: uppercase;
+      padding: 12px 22px; border: none; border-radius: 4px; cursor: pointer; transition: opacity .15s;
+    }
+    .notify-btn:hover { opacity: .88; }
+
+    /* ── Preview section ── */
+    .preview-section { padding: 56px 32px; background: #161616; border-top: 1px solid #222; }
+    .section-label { font-family: var(--font-d); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: #555; margin-bottom: 8px; }
+    .section-head { font-family: var(--font-d); font-weight: 900; font-size: 36px; text-transform: uppercase; color: var(--white); margin-bottom: 28px; line-height: 1; }
+    .section-head em { color: var(--gold); font-style: normal; }
+
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #222; border-radius: 8px; overflow: hidden; margin-bottom: 32px; }
+    .pillar { background: #111; padding: 28px 20px; }
+    .pillar-num { font-family: var(--font-d); font-weight: 900; font-size: 48px; color: #1e1e1e; line-height: 1; margin-bottom: 6px; }
+    .pillar-icon { font-size: 24px; color: var(--gold); margin-bottom: 10px; }
+    .pillar-head { font-family: var(--font-d); font-weight: 700; font-size: 18px; text-transform: uppercase; margin-bottom: 6px; }
+    .pillar-head.gold { color: var(--gold); }
+    .pillar-body { font-size: 12px; color: #666; line-height: 1.6; }
+
+    /* ── Stub preview ── */
+    .stub-preview { display: flex; max-width: 460px; border-radius: 6px; overflow: hidden; }
+    .stub-l { background: #111; border: 1px solid #222; padding: 18px 14px; min-width: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    .stub-l::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; border-right: 3px dashed #1e1e1e; }
+    .stub-l-logo { font-family: var(--font-d); font-weight: 900; font-size: 10px; color: var(--white); text-transform: uppercase; text-align: center; line-height: 1.1; margin-bottom: 4px; }
+    .stub-l-city { font-family: var(--font-d); font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+    .stub-l-num { font-family: var(--font-d); font-weight: 900; font-size: 36px; color: var(--gold); line-height: 1; }
+    .stub-r { background: #f2efe8; padding: 14px 18px; flex: 1; }
+    .stub-r-label { font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: #888; margin-bottom: 2px; font-family: var(--font-d); }
+    .stub-r-code { font-family: var(--font-d); font-weight: 900; font-size: 28px; color: #111; letter-spacing: .04em; margin-bottom: 10px; }
+    .stub-r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .stub-r-val { font-family: var(--font-d); font-weight: 700; font-size: 12px; color: #222; }
+    .stub-r-foot { font-size: 10px; color: #888; border-top: 1px solid #e2dfd6; padding-top: 8px; margin-top: 10px; font-style: italic; }
+
+    /* ── Why LA ── */
+    .why-section { padding: 0 32px 56px; background: #161616; }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: #222; border-radius: 8px; overflow: hidden; }
+    .why-item { background: #111; padding: 24px; }
+    .why-icon { font-size: 28px; margin-bottom: 10px; }
+    .why-head { font-family: var(--font-d); font-weight: 700; font-size: 16px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .why-body { font-size: 13px; color: #555; line-height: 1.6; }
+
+    /* ── Footer ── */
+    .footer { border-top: 1px solid #1e1e1e; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: #0a0a0a; }
+    .footer-brand { font-family: var(--font-d); font-weight: 700; font-size: 13px; color: #555; text-transform: uppercase; letter-spacing: .06em; }
+    .footer-tag { font-size: 11px; color: #333; text-transform: uppercase; letter-spacing: .08em; }
+    .footer-seal { width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid #222; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8px; }
+    .footer-seal-text { font-family: var(--font-d); font-size: 7px; letter-spacing: .1em; text-transform: uppercase; color: #444; line-height: 1.3; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 40px; min-height: auto; padding-top: 80px; }
+      .preview-section, .why-section { padding-left: 20px; padding-right: 20px; }
+      .pillars { grid-template-columns: 1fr; }
+      .la-mono { display: none; }
+      .stub-wordmark { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="stub-logo">
+    <div class="stub-icon">
+      <div class="stub-icon-left"><span>GET<br>CHECKED</span><small>Los Angeles, CA</small></div>
+      <div class="stub-icon-perf"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="stub-icon-right"><span>01</span></div>
+    </div>
+    <span class="stub-wordmark">Get Checked</span>
+  </a>
+  <a href="/" class="nav-back">← New York</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid-lines" aria-hidden="true"></div>
+  <div class="hero-sunset" aria-hidden="true"></div>
+  <div class="la-mono" aria-hidden="true">LA.</div>
+  <div style="position:relative;z-index:1">
+    <div class="hero-eyebrow">Los Angeles, California</div>
+    <h1>Drop your bags.<br>Keep <em>exploring.</em></h1>
+    <p class="hero-sub">Local spaces. Real people. Smarter cities. GetChecked is coming to LA — secure storage so you can enjoy the city hands free.</p>
+    <div class="cs-badge"><span class="cs-dot"></span>Coming soon — be the first to know</div>
+    <form class="notify-form" name="la-notify" method="POST" data-netlify="true" action="/cities/la/thanks">
+      <input type="hidden" name="form-name" value="la-notify">
+      <input class="notify-input" name="email" type="email" placeholder="your@email.com" required>
+      <input type="hidden" name="city" value="Los Angeles">
+      <button type="submit" class="notify-btn">Notify me</button>
+    </form>
+  </div>
+</section>
+
+<section class="preview-section">
+  <div class="section-label">Coming to Los Angeles</div>
+  <h2 class="section-head">Secure storage.<br>So you can <em>enjoy LA.</em></h2>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div class="pillar-icon">↓</div>
+      <div class="pillar-head gold">Drop</div>
+      <p class="pillar-body">Find a vetted station near Venice, Silver Lake, DTLA, or wherever you're heading. Scan, drop, go.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div class="pillar-icon">✓</div>
+      <div class="pillar-head">Check</div>
+      <p class="pillar-body">Digital stub is your receipt. Owner swipes to confirm. Item protection applies. No paper, no app.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div class="pillar-icon">→</div>
+      <div class="pillar-head">Explore</div>
+      <p class="pillar-body">Griffith. LACMA. The Broad. Grand Central Market. Hands free. Return any time during hours.</p>
+    </div>
+  </div>
+
+  <div class="stub-preview">
+    <div class="stub-l">
+      <div class="stub-l-logo">GET<br>CHECKED</div>
+      <div class="stub-l-city">LOS ANGELES, CA</div>
+      <div class="stub-l-num">01</div>
+    </div>
+    <div class="stub-r">
+      <div class="stub-r-label">Claim check</div>
+      <div class="stub-r-code">7F3A6B</div>
+      <div class="stub-r-grid">
+        <div><div class="stub-r-label">Station</div><div class="stub-r-val">Venice Beach Supply Co.</div></div>
+        <div><div class="stub-r-label">Time in</div><div class="stub-r-val">Sat, May 18 · 6:42 PM</div></div>
+        <div><div class="stub-r-label">Item</div><div class="stub-r-val">Bag / Backpack</div></div>
+        <div><div class="stub-r-label">Pay</div><div class="stub-r-val">Venmo / Cash</div></div>
+      </div>
+      <div class="stub-r-foot">Keep this. We'll take care of the rest.</div>
+    </div>
+  </div>
+</section>
+
+<section class="why-section">
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-icon">🌊</div>
+      <div class="why-head">Venice to DTLA</div>
+      <div class="why-body">Stations across LA's most-visited neighborhoods — beach, arts, food, and culture corridors.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🎬</div>
+      <div class="why-head">Tourist & local ready</div>
+      <div class="why-body">Whether you're visiting or a local heading to a show, GetChecked keeps you moving light.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">💚</div>
+      <div class="why-head">5% Stub</div>
+      <div class="why-body">Every LA station pledges 5% to a local cause — youth programs, housing, or environmental orgs.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🏪</div>
+      <div class="why-head">Own an LA shop?</div>
+      <div class="why-body">Be a founding partner. Zero fees during launch. Your price, your terms, your revenue.</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;padding:20px 24px;background:#0a0a0a;border:1px solid #1e1e1e;border-radius:8px;max-width:500px">
+    <div style="font-family:var(--font-d);font-weight:700;font-size:13px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Interested in hosting a LA station?</div>
+    <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:12px">We're scouting founding partners across LA. No fees, no contracts during launch.</p>
+    <a href="/partner" style="font-family:var(--font-d);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);text-decoration:none">Learn about becoming a station →</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div>
+    <div class="footer-brand">getchecked.co — Los Angeles, CA</div>
+    <div class="footer-tag">Secure storage. So you can enjoy Los Angeles.</div>
+  </div>
+  <a href="/" style="font-family:var(--font-d);font-weight:700;font-size:12px;color:#333;text-decoration:none;text-transform:uppercase;letter-spacing:.08em">← Back to New York</a>
+  <div class="footer-seal">
+    <div class="footer-seal-text">CHECK IN</div>
+    <div style="font-size:18px;color:#444;margin:2px 0">🔒</div>
+    <div class="footer-seal-text">CONFIDENCE OUT</div>
+  </div>
+</footer>
+
+</body>
+</html>

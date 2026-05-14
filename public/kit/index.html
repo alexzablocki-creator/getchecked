@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Station Kit — GetChecked</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    body { background: var(--black); }
+    .kit-header { padding: 32px 24px; border-bottom: 1px solid var(--border); }
+    .kit-header h1 { font-size: 36px; margin-bottom: 6px; }
+    .kit-sub { font-size: 14px; color: var(--muted); }
+    .kit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; padding: 32px 24px; }
+
+    /* ── QR Sticker (window decal) ── */
+    .sticker-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .sticker-label { font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .sticker {
+      background: var(--yellow); border-radius: 12px; padding: 20px;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 12px; max-width: 240px; position: relative;
+    }
+    .sticker::before {
+      content: ''; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      width: 2px; height: 90%; border-left: 2px dashed rgba(0,0,0,.2);
+    }
+    .sticker-top { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .sticker-brand { font-family: var(--font-display); font-weight: 900; font-size: 22px; color: var(--black); text-transform: uppercase; line-height: 1; text-align: center; }
+    .sticker-id { font-family: var(--font-display); font-weight: 900; font-size: 14px; color: var(--black); letter-spacing: .1em; text-transform: uppercase; }
+    .qr-box {
+      background: white; border-radius: 8px; padding: 12px;
+      display: flex; align-items: center; justify-content: center;
+      width: 160px; height: 160px;
+    }
+    .sticker-cta { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--black); text-transform: uppercase; letter-spacing: .08em; text-align: center; }
+
+    /* ── Counter sign ── */
+    .counter-sign {
+      background: var(--black); border: 2px solid var(--yellow);
+      border-radius: 8px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px; max-width: 340px;
+    }
+    .cs-left { flex-shrink: 0; }
+    .cs-right { flex: 1; }
+    .cs-head { font-family: var(--font-display); font-weight: 900; font-size: 22px; text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 4px; }
+    .cs-sub { font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .cs-fee { font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--yellow); margin-top: 6px; }
+
+    /* ── Station info card ── */
+    .info-card { background: var(--off); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; max-width: 340px; }
+    .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-key { color: var(--muted); font-family: var(--font-display); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+    .info-val { color: var(--white); text-align: right; max-width: 200px; }
+
+    .print-btn { display: flex; gap: 10px; padding: 0 24px 24px; flex-wrap: wrap; }
+
+    @media print {
+      .nav, .kit-header, .print-btn, #footer-root { display: none; }
+      body { background: white; }
+      .kit-grid { padding: 0; }
+      .sticker { box-shadow: 0 0 0 2px #ccc; }
+    }
+  </style>
+</head>
+<body>
+<div id="nav-root"></div>
+
+<div class="kit-header">
+  <div class="label" style="margin-bottom:8px">Station kit</div>
+  <h1 class="display" id="kit-title">Loading...</h1>
+  <p class="kit-sub" id="kit-sub"></p>
+</div>
+
+<div class="kit-grid">
+  <!-- QR Window Sticker -->
+  <div class="sticker-wrap">
+    <div class="sticker-label">1. Window sticker — print and display</div>
+    <div class="sticker" id="qr-sticker">
+      <div class="sticker-top">
+        <div class="sticker-brand">GET<br>CHECKED</div>
+        <div class="sticker-id" id="sticker-station-id">STATION —</div>
+      </div>
+      <div class="qr-box" id="qr-container">
+        <canvas id="qr-canvas"></canvas>
+      </div>
+      <div class="sticker-cta">Scan to check in</div>
+    </div>
+  </div>
+
+  <!-- Counter sign -->
+  <div class="sticker-wrap">
+    <div class="sticker-label">2. Counter sign — print and fold</div>
+    <div class="counter-sign">
+      <div class="cs-left">
+        <div style="background:var(--off);border:1px solid var(--border);border-radius:5px;padding:8px 10px;text-align:center">
+          <div style="font-family:var(--font-display);font-weight:900;font-size:9px;color:var(--white);text-transform:uppercase;line-height:1.1">GET<br>CHECKED</div>
+          <div style="font-family:var(--font-display);font-weight:900;font-size:16px;color:var(--yellow);margin-top:3px" id="sign-id">—</div>
+        </div>
+      </div>
+      <div class="cs-right">
+        <div class="cs-head">Check in.<br>Drop off.</div>
+        <div class="cs-sub">Show your stub to the owner.</div>
+        <div class="cs-fee" id="sign-fee">—</div>
+      </div>
+    </div>
+
+    <!-- Station info -->
+    <div class="sticker-label" style="margin-top:20px">3. Your station details</div>
+    <div class="info-card" id="info-card">
+      <div class="info-row"><span class="info-key">Station ID</span><span class="info-val" id="d-id">—</span></div>
+      <div class="info-row"><span class="info-key">Dashboard URL</span><span class="info-val" id="d-url" style="font-size:11px;word-break:break-all">—</span></div>
+      <div class="info-row"><span class="info-key">PIN</span><span class="info-val">Set during onboarding</span></div>
+      <div class="info-row"><span class="info-key">Your fee</span><span class="info-val" id="d-fee">—</span></div>
+      <div class="info-row"><span class="info-key">Hours</span><span class="info-val" id="d-hours">—</span></div>
+      <div class="info-row"><span class="info-key">Payment</span><span class="info-val" id="d-pay">—</span></div>
+      <div class="info-row"><span class="info-key">5% cause</span><span class="info-val" id="d-cause">—</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="print-btn">
+  <button class="btn btn-primary" onclick="window.print()">Print this kit</button>
+  <a id="station-link" href="#" class="btn btn-outline" target="_blank">Open station page →</a>
+  <a id="dashboard-link" href="#" class="btn btn-ghost" target="_blank">Open dashboard →</a>
+</div>
+
+<div id="footer-root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script type="module">
+import { STATIONS, renderNav, renderFooter } from '/lib/gc.js';
+document.getElementById('nav-root').innerHTML    = renderNav();
+document.getElementById('footer-root').innerHTML = renderFooter();
+
+const id = location.pathname.replace('/kit/', '').replace(/\//g,'').padStart(3,'0');
+const station = STATIONS[id];
+
+if (!station) {
+  document.getElementById('kit-title').textContent = 'Station not found';
+} else {
+  document.title = `Station Kit — ${station.name}`;
+  document.getElementById('kit-title').textContent  = station.name;
+  document.getElementById('kit-sub').textContent    = `${station.address} · Station ${id}`;
+  document.getElementById('sticker-station-id').textContent = `STATION ${id}`;
+  document.getElementById('sign-id').textContent    = parseInt(id).toString();
+  document.getElementById('sign-fee').textContent   = station.fee + ' per bag';
+  document.getElementById('d-id').textContent       = id;
+  document.getElementById('d-fee').textContent      = station.fee;
+  document.getElementById('d-hours').textContent    = station.hours;
+  document.getElementById('d-pay').textContent      = station.payment.map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(', ');
+  document.getElementById('d-cause').textContent    = station.cause || 'Not set yet';
+  const dashUrl = `https://getchecked.co/dashboard/${id}`;
+  const stationUrl = `https://getchecked.co/s/${id}`;
+  document.getElementById('d-url').textContent      = dashUrl;
+  document.getElementById('station-link').href      = stationUrl;
+  document.getElementById('dashboard-link').href    = dashUrl;
+
+  // Generate QR code
+  new QRCode(document.getElementById('qr-canvas'), {
+    text: stationUrl,
+    width: 136, height: 136,
+    colorDark: '#000000', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+}
+</script>
+</body>
+</html>

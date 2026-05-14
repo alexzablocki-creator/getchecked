@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>GetChecked — Station Dashboard</title>
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    body { background: var(--black); max-width: 480px; margin: 0 auto; }
+
+    .dash-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dash-station-name {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 18px; text-transform: uppercase; line-height: 1.1;
+    }
+    .dash-station-id { font-size: 12px; color: var(--muted); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-cell {
+      background: var(--black); padding: 14px 12px; text-align: center;
+    }
+    .stat-cell-num { font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--yellow); line-height: 1; }
+    .stat-cell-num.green { color: var(--green); }
+    .stat-cell-num.white { color: var(--white); }
+    .stat-cell-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 3px; font-family: var(--font-display); font-weight: 700; }
+
+    /* PIN gate */
+    .pin-gate {
+      padding: 40px 24px; text-align: center;
+    }
+    .pin-title { font-family: var(--font-display); font-weight: 900; font-size: 28px; text-transform: uppercase; margin-bottom: 8px; }
+    .pin-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+    .pin-dots { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
+    .pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 1.5px solid var(--border); transition: background .15s; }
+    .pin-dot.filled { background: var(--yellow); border-color: var(--yellow); }
+    .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 260px; margin: 0 auto; }
+    .pin-key {
+      background: var(--off); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 18px 10px;
+      font-family: var(--font-display); font-weight: 700; font-size: 24px;
+      text-align: center; cursor: pointer; color: var(--white);
+      transition: background .1s, transform .08s; user-select: none;
+    }
+    .pin-key:active { background: var(--surface); transform: scale(.93); }
+    .pin-key.del { font-size: 16px; color: var(--muted); }
+    .pin-error { color: var(--red); font-size: 13px; margin-top: 10px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; min-height: 20px; }
+
+    /* Main dashboard */
+    #dash-main { display: none; }
+
+    /* Confirm new check-in */
+    .confirm-section { padding: 20px; border-bottom: 1px solid var(--border); }
+    .confirm-section h2 { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-transform: uppercase; margin-bottom: 6px; }
+    .confirm-sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+    .code-input-row { display: flex; gap: 8px; }
+    .confirm-toast {
+      display: none; margin-top: 12px; padding: 12px 14px;
+      background: #0a2010; border: 1px solid #1a4020;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 14px; color: var(--green); text-transform: uppercase; letter-spacing: .06em;
+    }
+
+    /* Active checks list */
+    .checks-section { padding: 20px; }
+    .checks-section h2 { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-transform: uppercase; margin-bottom: 14px; }
+
+    .check-card {
+      background: var(--off); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 14px 16px;
+      margin-bottom: 10px; transition: border-color .2s;
+      /* Swipe support */
+      position: relative; overflow: hidden;
+      touch-action: pan-y;
+    }
+    .check-card.releasing { border-color: var(--yellow); background: #1a1700; }
+    .check-card.released  { opacity: .3; pointer-events: none; }
+    .check-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .check-claim { font-family: var(--font-display); font-weight: 900; font-size: 24px; color: var(--yellow); letter-spacing: .04em; }
+    .check-time  { font-size: 11px; color: var(--muted); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .check-item  { font-size: 13px; color: var(--dim); margin-bottom: 10px; }
+    .release-swipe {
+      width: 100%; padding: 12px;
+      font-family: var(--font-display); font-weight: 700; font-size: 14px;
+      letter-spacing: .08em; text-transform: uppercase;
+      background: transparent; color: var(--yellow);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      cursor: pointer; transition: background .15s, border-color .15s;
+    }
+    .release-swipe:hover { background: #1a1700; border-color: var(--yellow); }
+
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+    .empty-state-icon { font-size: 36px; margin-bottom: 12px; }
+    .empty-state-text { font-family: var(--font-display); font-weight: 700; font-size: 16px; text-transform: uppercase; }
+
+    .five-pct-note {
+      margin: 0 20px 20px; padding: 12px 14px;
+      background: #0a1a0a; border: 1px solid #1a3a1a;
+      border-radius: var(--radius-md);
+      font-size: 12px; color: #4a7a4a; line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PIN Gate -->
+<div id="pin-gate">
+  <div class="dash-header" style="border-bottom:1px solid var(--border)">
+    <div>
+      <div class="dash-station-id">Station Dashboard</div>
+      <div class="dash-station-name" id="pin-station-name">Loading...</div>
+    </div>
+    <div class="stub-mark">
+      <div class="stub-text">GET<br>CHECKED</div>
+      <div style="width:1px;margin:0 4px"></div>
+      <div class="stub-id" id="pin-station-id">—</div>
+    </div>
+  </div>
+  <div class="pin-gate">
+    <div class="pin-title">Enter your PIN</div>
+    <div class="pin-sub">4-digit station PIN — set when you joined</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-pad">
+      <div class="pin-key" onclick="pinKey('1')">1</div>
+      <div class="pin-key" onclick="pinKey('2')">2</div>
+      <div class="pin-key" onclick="pinKey('3')">3</div>
+      <div class="pin-key" onclick="pinKey('4')">4</div>
+      <div class="pin-key" onclick="pinKey('5')">5</div>
+      <div class="pin-key" onclick="pinKey('6')">6</div>
+      <div class="pin-key" onclick="pinKey('7')">7</div>
+      <div class="pin-key" onclick="pinKey('8')">8</div>
+      <div class="pin-key" onclick="pinKey('9')">9</div>
+      <div class="pin-key" onclick="pinKey('')"></div>
+      <div class="pin-key" onclick="pinKey('0')">0</div>
+      <div class="pin-key del" onclick="pinDel()">⌫</div>
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+    <div style="margin-top:20px;font-size:12px;color:var(--muted)">
+      Demo: use PIN <strong style="color:var(--yellow)">0001</strong> for any station
+    </div>
+  </div>
+</div>
+
+<!-- Main Dashboard -->
+<div id="dash-main">
+  <div class="dash-header">
+    <div>
+      <div class="dash-station-id" id="d-station-id">Station —</div>
+      <div class="dash-station-name" id="d-station-name">—</div>
+    </div>
+    <button onclick="lockDash()" style="background:transparent;border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 10px;color:var(--muted);font-family:var(--font-display);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer">Lock</button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-cell"><div class="stat-cell-num" id="stat-in">0</div><div class="stat-cell-label">Checked in</div></div>
+    <div class="stat-cell"><div class="stat-cell-num white" id="stat-out">0</div><div class="stat-cell-label">Released</div></div>
+    <div class="stat-cell"><div class="stat-cell-num green" id="stat-rev">$0</div><div class="stat-cell-label">Est. today</div></div>
+  </div>
+
+  <div class="confirm-section">
+    <h2>Confirm a drop-off</h2>
+    <p class="confirm-sub">Customer shows their stub — enter their claim code or scan their QR.</p>
+    <div class="code-input-row">
+      <input class="gc-input" id="confirm-input" placeholder="Claim code" maxlength="6"
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+      <button class="btn btn-primary" onclick="confirmCheckin()">Confirm</button>
+    </div>
+    <div class="confirm-toast" id="confirm-toast"></div>
+  </div>
+
+  <div class="checks-section">
+    <h2>Active checks</h2>
+    <div id="checks-list"></div>
+    <div class="empty-state" id="empty-state" style="display:none">
+      <div class="empty-state-icon">○</div>
+      <div class="empty-state-text">No active checks</div>
+    </div>
+  </div>
+
+  <div class="five-pct-note" id="five-pct-note"></div>
+</div>
+
+<script type="module">
+import { STATIONS, generateClaimCode, nowDisplay, getActiveChecks, saveReservation, updateReservationStatus, getReservations } from '/lib/gc.js';
+const STATIONS_MAP = STATIONS;
+
+const id = location.pathname.replace('/dashboard/', '').replace(/\//g, '').padStart(3, '0');
+const station = STATIONS[id] || { id, name: 'Station ' + id, fee: '$5', feeMin: 5, payment: ['cash'], cause: null };
+const DEMO_PIN = '0001';
+
+// Fill station name in PIN gate
+document.getElementById('pin-station-name').textContent = station.name;
+document.getElementById('pin-station-id').textContent   = parseInt(id);
+
+let pin = '';
+let checkedInCount = 0;
+let releasedCount  = 0;
+let estRevenue     = 0;
+
+window.pinKey = function(digit) {
+  if (!digit) return;
+  if (pin.length >= 4) return;
+  pin += digit;
+  updateDots();
+  if (pin.length === 4) setTimeout(checkPin, 120);
+};
+window.pinDel = function() {
+  pin = pin.slice(0, -1);
+  updateDots();
+  document.getElementById('pin-error').textContent = '';
+};
+function updateDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('pd' + i).classList.toggle('filled', i < pin.length);
+  }
+}
+function checkPin() {
+  if (pin === DEMO_PIN) {
+    document.getElementById('pin-gate').style.display = 'none';
+    document.getElementById('dash-main').style.display = 'block';
+    initDash();
+  } else {
+    document.getElementById('pin-error').textContent = 'Incorrect PIN — try again';
+    pin = '';
+    updateDots();
+  }
+}
+window.lockDash = function() {
+  document.getElementById('dash-main').style.display = 'none';
+  document.getElementById('pin-gate').style.display = 'block';
+  pin = ''; updateDots();
+  document.getElementById('pin-error').textContent = '';
+};
+
+function initDash() {
+  window.station = STATIONS[id] || null;
+  document.getElementById('d-station-id').textContent   = 'Station ' + id;
+  document.getElementById('d-station-name').textContent = station.name;
+  if (station.cause) {
+    document.getElementById('five-pct-note').innerHTML =
+      `<strong style="color:var(--green);font-family:var(--font-display);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.08em">5% Stub active</strong><br>` +
+      `${station.name} pledges 5% of storage revenue to <strong>${station.cause}</strong>. Thank you.`;
+  }
+  // Seed two demo items so dashboard isn't empty on first load
+  const existing = getActiveChecks(id);
+  if (existing.length === 0) {
+    const demos = [
+      { claimCode: generateClaimCode(), stationId: id, stationName: station.name, timeIn: new Date(Date.now() - 42*60000).toISOString(), status: 'checked_in', item: 'Bag / Backpack', feeCollected: station.feeMin },
+      { claimCode: generateClaimCode(), stationId: id, stationName: station.name, timeIn: new Date(Date.now() - 18*60000).toISOString(), status: 'checked_in', item: 'Rolling luggage', feeCollected: station.feeMax || station.feeMin },
+    ];
+    demos.forEach(saveReservation);
+    checkedInCount = 2;
+    estRevenue = demos.reduce((s, r) => s + (r.feeCollected || 0), 0);
+  } else {
+    checkedInCount = existing.length;
+    estRevenue = checkedInCount * (station.feeMin || 5);
+  }
+  refreshStats();
+  renderChecks();
+}
+
+function refreshStats() {
+  document.getElementById('stat-in').textContent  = checkedInCount;
+  document.getElementById('stat-out').textContent = releasedCount;
+  document.getElementById('stat-rev').textContent = '$' + estRevenue;
+}
+
+function renderChecks() {
+  const active = getActiveChecks(id);
+  const list   = document.getElementById('checks-list');
+  const empty  = document.getElementById('empty-state');
+  if (active.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = active.map(r => {
+    const mins = Math.round((Date.now() - new Date(r.timeIn)) / 60000);
+    const dur  = mins < 60 ? `${mins}m ago` : `${Math.floor(mins/60)}h ${mins%60}m ago`;
+    return `
+    <div class="check-card" id="card-${r.claimCode}">
+      <div class="check-card-top">
+        <div class="check-claim">${r.claimCode}</div>
+        <div class="check-time">In ${dur}</div>
+      </div>
+      <div class="check-item">${r.item}</div>
+      <button class="release-swipe" onclick="releaseItem('${r.claimCode}')">
+        → Swipe to release
+      </button>
+    </div>`;
+  }).join('');
+}
+
+window.confirmCheckin = function() {
+  const code = document.getElementById('confirm-input').value.trim();
+  if (!code) return;
+  const toast = document.getElementById('confirm-toast');
+  toast.style.display = 'block';
+  toast.textContent   = `✓ Confirmed — ${code} is checked in`;
+  checkedInCount++;
+  estRevenue += station.feeMin || 5;
+  refreshStats();
+  saveReservation({ claimCode: code, stationId: id, stationName: station.name, timeIn: new Date().toISOString(), status: 'checked_in', item: 'Bag / Luggage', feeCollected: station.feeMin });
+  renderChecks();
+  document.getElementById('confirm-input').value = '';
+  setTimeout(() => toast.style.display = 'none', 3000);
+};
+
+window.releaseItem = async function(claimCode) {
+  // Release via send-email function (updates DB + sends review email)
+  try {
+    await fetch('/.netlify/functions/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'release',
+        claimCode,
+        stationId: id,
+        perk: station?.perk || null,
+        cause: station?.cause || null,
+      }),
+    });
+  } catch(e) { console.warn('Release email failed:', e); }
+
+  updateReservationStatus(claimCode, 'released');
+  const card = document.getElementById('card-' + claimCode);
+  if (card) { card.classList.add('released'); setTimeout(() => { card.remove(); renderChecks(); }, 600); }
+  releasedCount++;
+  refreshStats();
+
+  const toast = document.getElementById('confirm-toast');
+  toast.style.display = 'block';
+  toast.style.background = '#1a1700';
+  toast.style.borderColor = '#2a2800';
+  toast.style.color = 'var(--yellow)';
+  toast.innerHTML = `✓ ${claimCode} released — review request emailed to customer`;
+  setTimeout(() => toast.style.display = 'none', 4000);
+};
+</script>
+</body>
+</html>

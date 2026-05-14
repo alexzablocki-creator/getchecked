@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GetChecked Miami — Secure Bag Storage. Hands Free in Miami.</title>
+  <meta name="description" content="GetChecked is coming to Miami. Drop your bags at a local shop and explore the city hands free.">
+  <meta property="og:title" content="GetChecked Miami — Drop your bags. Enjoy Miami.">
+  <meta property="og:description" content="Secure storage so you can enjoy Miami. Launching soon.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --teal:   #008F9A;
+      --aqua:   #4EDBD0;
+      --coral:  #FF6F61;
+      --pink:   #FF4FA3;
+      --sun:    #FFC700;
+      --sand:   #F7F1E6;
+      --char:   #222222;
+      --white:  #FFFFFF;
+      --font-d: 'Barlow Condensed', sans-serif;
+      --font-b: 'Barlow', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--sand);
+      color: var(--char);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 24px; border-bottom: 1px solid rgba(0,143,154,.15);
+      background: var(--sand); position: sticky; top: 0; z-index: 100;
+    }
+    .stub-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .stub-icon {
+      display: flex; align-items: stretch; background: var(--teal);
+      border-radius: 5px; overflow: hidden; height: 40px;
+    }
+    .stub-icon-left { padding: 5px 8px; display: flex; flex-direction: column; justify-content: center; }
+    .stub-icon-left span { font-family: var(--font-d); font-weight: 900; font-size: 9px; color: var(--white); text-transform: uppercase; line-height: 1.1; }
+    .stub-icon-left small { font-family: var(--font-d); font-size: 7px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; display: block; }
+    .stub-icon-perf { width: 6px; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 4px 0; background: rgba(0,0,0,.2); }
+    .stub-icon-perf span { width: 3px; height: 3px; background: var(--sand); border-radius: 50%; display: block; }
+    .stub-icon-right { padding: 4px 8px; display: flex; align-items: center; background: var(--sand); }
+    .stub-icon-right span { font-family: var(--font-d); font-weight: 900; font-size: 20px; color: var(--coral); line-height: 1; }
+    .stub-wordmark { font-family: var(--font-d); font-weight: 900; font-size: 20px; letter-spacing: .04em; text-transform: uppercase; color: var(--teal); }
+    .nav-back { font-family: var(--font-d); font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); text-decoration: none; border: 1.5px solid var(--teal); border-radius: 4px; padding: 7px 14px; }
+    .nav-back:hover { background: var(--teal); color: var(--white); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 70vh; display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 60px 32px 48px;
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--teal) 0%, #005f6b 60%, #003d44 100%);
+    }
+    .hero-palms {
+      position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+      opacity: .08; font-size: 200px; display: flex; align-items: flex-start;
+      justify-content: flex-end; padding: 20px; pointer-events: none;
+      user-select: none; line-height: 1;
+    }
+    .hero-waves {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+      background: var(--sand); clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-d); font-weight: 700; font-size: 13px;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--aqua);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .hero-eyebrow::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--aqua); }
+    .hero h1 {
+      font-family: var(--font-d); font-weight: 900; font-size: clamp(56px, 11vw, 104px);
+      line-height: .9; text-transform: uppercase; color: var(--white);
+      margin-bottom: 20px; position: relative;
+    }
+    .hero h1 em { color: var(--coral); font-style: normal; }
+    .hero-sub { font-size: 18px; color: rgba(255,255,255,.75); max-width: 420px; line-height: 1.6; margin-bottom: 36px; }
+
+    /* ── Coming soon badge ── */
+    .cs-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--coral); color: var(--white);
+      font-family: var(--font-d); font-weight: 900; font-size: 14px;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: 10px 20px; border-radius: 4px; margin-bottom: 24px;
+    }
+    .cs-dot { width: 8px; height: 8px; background: var(--white); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── Notify form ── */
+    .notify-form { display: flex; gap: 10px; max-width: 440px; flex-wrap: wrap; }
+    .notify-input {
+      flex: 1; min-width: 200px; background: rgba(255,255,255,.15);
+      border: 1.5px solid rgba(255,255,255,.3); border-radius: 4px;
+      padding: 12px 16px; color: var(--white); font-family: var(--font-b);
+      font-size: 15px; outline: none; backdrop-filter: blur(4px);
+    }
+    .notify-input::placeholder { color: rgba(255,255,255,.5); }
+    .notify-input:focus { border-color: var(--aqua); }
+    .notify-btn {
+      background: var(--sun); color: var(--char); font-family: var(--font-d);
+      font-weight: 900; font-size: 14px; letter-spacing: .08em; text-transform: uppercase;
+      padding: 12px 22px; border: none; border-radius: 4px; cursor: pointer;
+      transition: opacity .15s;
+    }
+    .notify-btn:hover { opacity: .88; }
+    .notify-thanks { display: none; font-family: var(--font-d); font-weight: 700; font-size: 14px; color: var(--aqua); letter-spacing: .1em; text-transform: uppercase; margin-top: 8px; }
+
+    /* ── Brand preview ── */
+    .brand-section { padding: 56px 32px; background: var(--sand); }
+    .section-label { font-family: var(--font-d); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .section-head { font-family: var(--font-d); font-weight: 900; font-size: 36px; text-transform: uppercase; color: var(--char); margin-bottom: 28px; line-height: 1; }
+    .section-head em { color: var(--coral); font-style: normal; }
+
+    .preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .preview-card {
+      border-radius: 10px; padding: 24px; position: relative; overflow: hidden;
+    }
+    .preview-card.teal { background: var(--teal); color: var(--white); }
+    .preview-card.sand { background: var(--white); border: 1.5px solid rgba(0,143,154,.2); color: var(--char); }
+    .preview-card.coral { background: var(--coral); color: var(--white); }
+    .preview-card-label { font-family: var(--font-d); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; opacity: .7; margin-bottom: 10px; }
+    .preview-card-head { font-family: var(--font-d); font-weight: 900; font-size: 22px; text-transform: uppercase; line-height: 1.1; margin-bottom: 8px; }
+    .preview-card-body { font-size: 13px; opacity: .75; line-height: 1.6; }
+    .palm-deco { position: absolute; right: -10px; bottom: -10px; font-size: 80px; opacity: .08; pointer-events: none; user-select: none; }
+
+    /* ── Stub preview ── */
+    .stub-preview {
+      display: flex; max-width: 440px; border-radius: 8px;
+      overflow: hidden; margin-top: 32px; box-shadow: 0 8px 32px rgba(0,143,154,.15);
+    }
+    .stub-l {
+      background: var(--teal); padding: 20px 16px; min-width: 110px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; position: relative;
+    }
+    .stub-l::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; border-right: 3px dashed var(--sand); }
+    .stub-l-logo { font-family: var(--font-d); font-weight: 900; font-size: 11px; color: var(--white); text-transform: uppercase; text-align: center; line-height: 1.1; margin-bottom: 6px; }
+    .stub-l-city { font-family: var(--font-d); font-size: 8px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+    .stub-l-num { font-family: var(--font-d); font-weight: 900; font-size: 36px; color: var(--coral); line-height: 1; }
+    .stub-r { background: var(--sand); padding: 16px 20px; flex: 1; }
+    .stub-r-label { font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: #888; margin-bottom: 3px; font-family: var(--font-d); }
+    .stub-r-code { font-family: var(--font-d); font-weight: 900; font-size: 28px; color: var(--teal); letter-spacing: .04em; margin-bottom: 10px; }
+    .stub-r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .stub-r-val { font-family: var(--font-d); font-weight: 700; font-size: 12px; color: var(--char); }
+    .stub-r-foot { font-size: 10px; color: #888; border-top: 1px solid #e0ddd4; padding-top: 8px; margin-top: 10px; font-style: italic; }
+
+    /* ── Why Miami ── */
+    .why-section { padding: 0 32px 56px; }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: rgba(0,143,154,.15); border: 1px solid rgba(0,143,154,.15); border-radius: 8px; overflow: hidden; }
+    .why-item { background: var(--sand); padding: 24px; }
+    .why-icon { font-size: 28px; margin-bottom: 10px; }
+    .why-head { font-family: var(--font-d); font-weight: 700; font-size: 16px; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+    .why-body { font-size: 13px; color: #666; line-height: 1.6; }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid rgba(0,143,154,.15); padding: 24px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px; background: var(--sand);
+    }
+    .footer-brand { font-family: var(--font-d); font-weight: 700; font-size: 13px; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; }
+    .footer-tag { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .08em; }
+    .footer-seal {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 1.5px solid rgba(0,143,154,.3);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8px;
+    }
+    .footer-seal-text { font-family: var(--font-d); font-size: 7px; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); line-height: 1.3; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 40px; min-height: auto; padding-top: 80px; }
+      .brand-section, .why-section { padding-left: 20px; padding-right: 20px; }
+      .stub-wordmark { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="stub-logo">
+    <div class="stub-icon">
+      <div class="stub-icon-left"><span>GET<br>CHECKED</span><small>Miami, FL</small></div>
+      <div class="stub-icon-perf"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="stub-icon-right"><span>01</span></div>
+    </div>
+    <span class="stub-wordmark">Get Checked</span>
+  </a>
+  <a href="/" class="nav-back">← New York</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-palms" aria-hidden="true">🌴</div>
+  <div class="hero-waves" aria-hidden="true"></div>
+  <div style="position:relative;z-index:1">
+    <div class="hero-eyebrow">Miami, Florida</div>
+    <h1>Drop your bags.<br><em>Enjoy Miami.</em></h1>
+    <p class="hero-sub">Bag storage at vetted local shops across Miami. Drop your luggage, explore the city, pick up when you're ready. Launching soon.</p>
+    <div class="cs-badge"><span class="cs-dot"></span>Coming soon — be the first to know</div>
+    <form class="notify-form" name="miami-notify" method="POST" data-netlify="true" action="/cities/miami/thanks">
+      <input type="hidden" name="form-name" value="miami-notify">
+      <input class="notify-input" name="email" type="email" placeholder="your@email.com" required>
+      <input type="hidden" name="city" value="Miami">
+      <button type="submit" class="notify-btn">Notify me</button>
+    </form>
+    <div class="notify-thanks" id="notify-thanks">✓ You're on the list. We'll be in touch.</div>
+  </div>
+</section>
+
+<section class="brand-section">
+  <div class="section-label">Coming to Miami</div>
+  <h2 class="section-head">Secure storage.<br>So you can <em>enjoy Miami.</em></h2>
+
+  <div class="preview-grid">
+    <div class="preview-card teal">
+      <div class="preview-card-label">Drop</div>
+      <div class="preview-card-head">Find a bag drop near you</div>
+      <div class="preview-card-body">Walk into a vetted Miami shop — boutique, café, or surf spot. Scan the QR, drop your bag, go.</div>
+      <div class="palm-deco" aria-hidden="true">🌴</div>
+    </div>
+    <div class="preview-card sand">
+      <div class="preview-card-label">Check</div>
+      <div class="preview-card-head">Your digital stub is your receipt</div>
+      <div class="preview-card-body">Show your stub. Owner swipes to confirm. Item protection applies. No paper, no hassle.</div>
+    </div>
+    <div class="preview-card coral">
+      <div class="preview-card-label">Explore</div>
+      <div class="preview-card-head">Art Basel. South Beach. Wynwood. Hands free.</div>
+      <div class="preview-card-body">Return any time during station hours. The city is yours.</div>
+      <div class="palm-deco" aria-hidden="true">🌊</div>
+    </div>
+  </div>
+
+  <!-- Stub preview -->
+  <div class="stub-preview">
+    <div class="stub-l">
+      <div class="stub-l-logo">GET<br>CHECKED</div>
+      <div class="stub-l-city">MIAMI, FL 🌴</div>
+      <div class="stub-l-num">01</div>
+    </div>
+    <div class="stub-r">
+      <div class="stub-r-label">Claim check</div>
+      <div class="stub-r-code" style="color:var(--coral)">7F3A6B</div>
+      <div class="stub-r-grid">
+        <div><div class="stub-r-label">Station</div><div class="stub-r-val">South Beach Surf Co.</div></div>
+        <div><div class="stub-r-label">Time in</div><div class="stub-r-val">Sat, May 18 · 6:42 PM</div></div>
+        <div><div class="stub-r-label">Item</div><div class="stub-r-val">Bag / Backpack</div></div>
+        <div><div class="stub-r-label">Pay</div><div class="stub-r-val">Venmo / Cash</div></div>
+      </div>
+      <div class="stub-r-foot">Keep this. We'll take care of the rest.</div>
+    </div>
+  </div>
+</section>
+
+<section class="why-section">
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-icon">🏖️</div>
+      <div class="why-head">Beach-ready</div>
+      <div class="why-body">Stations near South Beach, Wynwood, Brickell, and the Design District. Drop before you swim.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🎨</div>
+      <div class="why-head">Art Basel season</div>
+      <div class="why-body">December in Miami means crowds and gear. GetChecked turns local shops into a city-wide coat check.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">💚</div>
+      <div class="why-head">5% Stub</div>
+      <div class="why-body">Every Miami station pledges 5% to a local cause — youth arts, housing, or environmental orgs they choose.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🏪</div>
+      <div class="why-head">Own a Miami shop?</div>
+      <div class="why-body">Be a founding station partner. Zero fees during launch. You set the price, keep 100% of revenue.</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;padding:20px 24px;background:#0a2820;border:1px solid rgba(0,143,154,.3);border-radius:8px;max-width:500px">
+    <div style="font-family:var(--font-d);font-weight:700;font-size:13px;text-transform:uppercase;color:#4EDBD0;margin-bottom:6px">Interested in hosting a Miami station?</div>
+    <p style="font-size:13px;color:#4a8a7a;line-height:1.6;margin-bottom:12px">We're actively scouting founding partners in Miami. No fees, no contracts during launch.</p>
+    <a href="/partner" style="font-family:var(--font-d);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#4EDBD0;text-decoration:none">Learn about becoming a station →</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div>
+    <div class="footer-brand">getchecked.co — Miami, FL</div>
+    <div class="footer-tag">Drop your bags. Enjoy Miami.</div>
+  </div>
+  <a href="/" style="font-family:var(--font-d);font-weight:700;font-size:12px;color:#888;text-decoration:none;text-transform:uppercase;letter-spacing:.08em">← Back to New York</a>
+  <div class="footer-seal">
+    <div class="footer-seal-text">CHECK IN</div>
+    <div style="font-size:18px;color:var(--coral);margin:2px 0">🔒</div>
+    <div class="footer-seal-text">CONFIDENCE OUT</div>
+  </div>
+</footer>
+
+</body>
+</html>
