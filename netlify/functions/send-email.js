@@ -79,6 +79,7 @@ async function sendEmail({ to, subject, html }) {
     },
     body: JSON.stringify({
       from: 'GetChecked <hello@getchecked.co>',
+      reply_to: 'alex.zablocki@gmail.com',
       to,
       subject,
       html,
