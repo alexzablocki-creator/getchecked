@@ -2,169 +2,175 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leave a review — GetChecked</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles/global.css">
   <style>
-    body { background: var(--black); min-height: 100vh; }
-    .review-wrap { max-width: 480px; margin: 0 auto; padding: 40px 24px; }
-    .review-header { text-align: center; margin-bottom: 32px; }
-    .review-header h1 { font-size: clamp(36px, 8vw, 56px); margin-bottom: 8px; }
-    .review-header h1 em { color: var(--green); font-style: normal; }
-    .review-header p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-    .station-info { background: var(--off); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px; text-align: center; }
-    .station-info-name { font-family: var(--font-display); font-weight: 900; font-size: 20px; text-transform: uppercase; margin-bottom: 4px; }
-    .station-info-code { font-size: 12px; color: var(--muted); }
-    .star-row { display: flex; justify-content: center; gap: 12px; margin: 24px 0; }
-    .star-btn { font-size: 44px; cursor: pointer; opacity: .25; transition: opacity .15s, transform .1s; border: none; background: transparent; padding: 4px; line-height: 1; }
-    .star-btn.active { opacity: 1; }
-    .star-btn:hover { transform: scale(1.15); }
-    .rating-label { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); min-height: 20px; margin-bottom: 20px; }
-    .comment-area { width: 100%; background: var(--off); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; color: var(--white); font-family: var(--font-body); font-size: 15px; outline: none; resize: none; height: 100px; transition: border-color .15s; }
-    .comment-area:focus { border-color: var(--green); }
-    .comment-area::placeholder { color: var(--muted); }
-    .submit-btn { width: 100%; background: var(--green); color: #0a2010; font-family: var(--font-display); font-weight: 900; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; padding: 16px; border: none; border-radius: var(--radius-sm); cursor: pointer; margin-top: 12px; transition: opacity .15s; }
-    .submit-btn:hover { opacity: .88; }
-    .submit-btn:disabled { opacity: .4; cursor: not-allowed; }
-    .success-state { display: none; text-align: center; padding: 40px 0; }
-    .success-icon { font-size: 56px; margin-bottom: 16px; }
-    .success-head { font-family: var(--font-display); font-weight: 900; font-size: 40px; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
-    .success-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
-    .phil-box { background: #0a1a0a; border: 1px solid #1a3a1a; border-radius: var(--radius-md); padding: 16px; margin-top: 24px; text-align: left; }
-    .error-state { display: none; text-align: center; padding: 40px 0; }
-    .rating-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-top: -16px; margin-bottom: 16px; padding: 0 4px; }
+    body{background:var(--black);min-height:100vh}
+    .wrap{max-width:480px;margin:0 auto;padding:36px 20px}
+    .eyebrow{font-family:var(--font-display);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .eyebrow::before{content:'';display:inline-block;width:20px;height:2px;background:var(--green)}
+    h1{font-family:var(--font-display);font-weight:900;font-size:clamp(36px,9vw,56px);text-transform:uppercase;line-height:.92;margin-bottom:12px}
+    h1 em{color:var(--green);font-style:normal}
+    .sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+    .sinfo{background:var(--off);border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center;margin-bottom:24px}
+    .sname{font-family:var(--font-display);font-weight:900;font-size:18px;text-transform:uppercase;margin-bottom:4px}
+    .scode{font-size:12px;color:var(--muted)}
+    .stars{display:flex;justify-content:center;gap:8px;margin:20px 0 6px}
+    .star{font-size:44px;cursor:pointer;background:none;border:none;padding:4px;line-height:1;color:var(--surface);transition:color .1s,transform .1s}
+    .star.on{color:var(--yellow)}
+    .star:hover{transform:scale(1.15)}
+    .slabels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;padding:0 4px}
+    .rlabel{text-align:center;font-family:var(--font-display);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow);min-height:20px;margin-bottom:18px}
+    textarea{width:100%;background:var(--off);border:1.5px solid var(--border);border-radius:4px;padding:12px 14px;color:var(--white);font-family:var(--font-body);font-size:15px;outline:none;resize:none;height:96px;transition:border-color .15s;box-sizing:border-box}
+    textarea:focus{border-color:var(--green)}
+    textarea::placeholder{color:var(--muted)}
+    .sbtn{width:100%;background:var(--green);color:#0a2010;font-family:var(--font-display);font-weight:900;font-size:18px;letter-spacing:.06em;text-transform:uppercase;padding:15px;border:none;border-radius:4px;cursor:pointer;margin-top:12px;transition:opacity .15s}
+    .sbtn:hover{opacity:.88}
+    .sbtn:disabled{opacity:.4;cursor:not-allowed}
+    .success{display:none;text-align:center;padding:32px 0}
+    .sicon{font-size:52px;margin-bottom:14px}
+    .shead{font-family:var(--font-display);font-weight:900;font-size:40px;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+    .ssub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:22px}
+    .philbox{background:#0a1a0a;border:1px solid #1a3a1a;border-radius:6px;padding:14px;text-align:left;margin-top:20px}
+    .errstate{display:none;text-align:center;padding:40px 0}
   </style>
 </head>
 <body>
 <div id="nav-root"></div>
 
-<div class="review-wrap">
+<div class="wrap">
+  <div id="formstate">
+    <div class="eyebrow">Verified check-in</div>
+    <h1>How was<br><em>your check-in?</em></h1>
+    <p class="sub">Takes 30 seconds. Your review helps other travelers find great stations.</p>
 
-  <div id="review-form-state">
-    <div class="review-header">
-      <div class="label" style="margin-bottom:10px;justify-content:center;display:flex;align-items:center;gap:8px">
-        <span style="display:inline-block;width:20px;height:2px;background:var(--green)"></span>
-        Verified check-in
-      </div>
-      <h1 class="display">How was<br><em>your check-in?</em></h1>
-      <p>Takes 30 seconds. Your review helps other travelers find great stations.</p>
+    <div class="sinfo">
+      <div class="sname" id="sname">Loading...</div>
+      <div class="scode" id="scode"></div>
     </div>
 
-    <div class="station-info" id="station-info">
-      <div class="station-info-name" id="info-name">Loading...</div>
-      <div class="station-info-code" id="info-code"></div>
+    <div class="stars" id="starrow">
+      <button class="star" id="s1" type="button">★</button>
+      <button class="star" id="s2" type="button">★</button>
+      <button class="star" id="s3" type="button">★</button>
+      <button class="star" id="s4" type="button">★</button>
+      <button class="star" id="s5" type="button">★</button>
     </div>
+    <div class="slabels"><span>Poor</span><span>Excellent</span></div>
+    <div class="rlabel" id="rlabel">Tap a star to rate</div>
 
-    <div class="star-row" id="star-row">
-      <button class="star-btn" onclick="rate(1)" id="s1">★</button>
-      <button class="star-btn" onclick="rate(2)" id="s2">★</button>
-      <button class="star-btn" onclick="rate(3)" id="s3">★</button>
-      <button class="star-btn" onclick="rate(4)" id="s4">★</button>
-      <button class="star-btn" onclick="rate(5)" id="s5">★</button>
-    </div>
-    <div class="rating-labels"><span>Poor</span><span>Excellent</span></div>
-    <div class="rating-label" id="rating-label">Tap a star to rate</div>
-
-    <textarea class="comment-area" id="comment" placeholder="Tell us more (optional) — was the owner friendly? Easy to find? Would you use GetChecked again?"></textarea>
-
-    <button class="submit-btn" id="submit-btn" onclick="submitReview()" disabled>Submit review</button>
+    <textarea id="comment" placeholder="Tell us more (optional) — was the owner friendly? Easy to find? Would you use GetChecked again?"></textarea>
+    <button class="sbtn" id="submitBtn" type="button" disabled>Submit review</button>
   </div>
 
-  <div class="success-state" id="success-state">
-    <div class="success-icon">⭐</div>
-    <div class="success-head">Thank you!</div>
-    <p class="success-sub">Your review has been posted. It helps other travelers find great GetChecked stations.</p>
-    <a href="/" class="btn btn-primary" style="font-size:14px">Back to GetChecked</a>
-    <div class="phil-box">
+  <div class="success" id="success">
+    <div class="sicon">⭐</div>
+    <div class="shead">Thank you!</div>
+    <p class="ssub">Your review has been posted. It helps other travelers find great GetChecked stations.</p>
+    <a href="/" class="btn btn-primary">Back to GetChecked</a>
+    <div class="philbox">
       <div style="font-family:var(--font-display);font-weight:700;font-size:12px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">♥ Your check-in made an impact</div>
-      <div style="font-size:13px;color:#4a8a4a;line-height:1.6" id="phil-text">This station pledges 5% of every storage fee to a local neighborhood cause. Thank you for being part of it.</div>
+      <div style="font-size:13px;color:#4a8a4a;line-height:1.6" id="philtext">This station pledges 5% of every storage fee to a local neighborhood cause. Thank you.</div>
     </div>
   </div>
 
-  <div class="error-state" id="error-state">
-    <div style="font-size:48px;margin-bottom:16px">⚠️</div>
-    <div class="display" style="font-size:32px;color:var(--red);margin-bottom:8px" id="error-head">Something went wrong</div>
-    <p style="font-size:14px;color:var(--muted);margin-bottom:24px" id="error-msg">This review link may be invalid or already used.</p>
+  <div class="errstate" id="errstate">
+    <div style="font-size:48px;margin-bottom:14px">⚠️</div>
+    <div style="font-family:var(--font-display);font-weight:900;font-size:28px;text-transform:uppercase;color:var(--red);margin-bottom:8px" id="errhead">Something went wrong</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px" id="errmsg">This review link may be invalid or already used.</p>
     <a href="/" class="btn btn-outline">Back to GetChecked</a>
   </div>
-
 </div>
 
 <div id="footer-root"></div>
 
-<script type="module">
-import { STATIONS, renderNav, renderFooter } from '/lib/gc.js';
-document.getElementById('nav-root').innerHTML    = renderNav();
-document.getElementById('footer-root').innerHTML = renderFooter();
-
-const params     = new URLSearchParams(location.search);
-const claimCode  = params.get('code');
-const stationId  = params.get('station') || '000';
-const station    = STATIONS[stationId.padStart(3,'0')];
-let selectedRating = 0;
+<script>
+const STATIONS = {
+  "001":{name:"Rudy's Barber Shop",cause:"LES Youth Arts Coalition"},
+  "002":{name:"La Paloma Bodega",cause:"Bowery Mission"},
+  "003":{name:"Essex Coffee Co.",cause:"Lower East Side Girls Club"},
+  "004":{name:"Grand St. Laundry",cause:"Henry Street Settlement"},
+  "005":{name:"Delancey Print Shop",cause:"Educational Alliance"},
+  "006":{name:"Barber Shop Levi",cause:null}
+};
 
 const LABELS = ['','Poor','Fair','Good','Great','Excellent'];
+const p = new URLSearchParams(location.search);
+const claimCode = p.get('code') || '';
+const stationId = (p.get('station') || '006').padStart(3,'0');
+const S = STATIONS[stationId];
+let rating = 0;
 
+// Init
 if (!claimCode) {
-  showError('Invalid link', 'This review link is missing a claim code.');
+  showErr('Invalid link','This review link is missing a claim code.');
 } else {
-  document.getElementById('info-name').textContent = station ? station.name : 'GetChecked Station';
-  document.getElementById('info-code').textContent = `Claim code: ${claimCode}`;
-  if (station?.cause) {
-    document.getElementById('phil-text').textContent =
-      `${station.name} pledges 5% of every storage fee to ${station.cause}. Thank you for being part of it.`;
+  document.getElementById('sname').textContent = S ? S.name : 'GetChecked Station';
+  document.getElementById('scode').textContent = 'Claim code: ' + claimCode;
+  if (S && S.cause) {
+    document.getElementById('philtext').textContent =
+      S.name + ' pledges 5% of every storage fee to ' + S.cause + '. Thank you for being part of it.';
   }
 }
 
-window.rate = function(v) {
-  selectedRating = v;
-  for (let i = 1; i <= 5; i++) {
-    const s = document.getElementById('s'+i);
-    s.classList.toggle('active', i <= v);
-    s.style.color = i <= v ? 'var(--yellow)' : 'inherit';
-  }
-  document.getElementById('rating-label').textContent = LABELS[v];
-  document.getElementById('submit-btn').disabled = false;
-};
+// Star buttons
+for (let i = 1; i <= 5; i++) {
+  document.getElementById('s'+i).addEventListener('click', function() {
+    rating = i;
+    for (let j = 1; j <= 5; j++) {
+      const el = document.getElementById('s'+j);
+      if (j <= i) { el.classList.add('on'); }
+      else { el.classList.remove('on'); }
+    }
+    document.getElementById('rlabel').textContent = LABELS[i];
+    document.getElementById('submitBtn').disabled = false;
+  });
+}
 
-window.submitReview = async function() {
-  if (!selectedRating) return;
+// Submit
+document.getElementById('submitBtn').addEventListener('click', async function() {
+  if (!rating) return;
   const comment = document.getElementById('comment').value.trim();
-  const btn = document.getElementById('submit-btn');
+  const btn = document.getElementById('submitBtn');
   btn.disabled = true; btn.textContent = 'Submitting...';
 
   try {
     const res = await fetch('/.netlify/functions/submit-review', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        claimCode,
-        stationId: stationId.padStart(3,'0'),
-        rating: selectedRating,
-        comment,
-      }),
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ claimCode, stationId, rating, comment })
     });
     const data = await res.json();
     if (data.error === 'Review already submitted for this check-in') {
-      showError('Already reviewed', 'You've already left a review for this check-in. Thank you!');
+      showErr('Already reviewed', 'You already left a review for this check-in. Thank you!');
       return;
     }
     if (!data.ok) throw new Error(data.error || 'Error');
-    document.getElementById('review-form-state').style.display = 'none';
-    document.getElementById('success-state').style.display     = 'block';
+    document.getElementById('formstate').style.display = 'none';
+    document.getElementById('success').style.display   = 'block';
   } catch(e) {
     btn.disabled = false; btn.textContent = 'Submit review';
     alert('Something went wrong — please try again.');
   }
-};
+});
 
-function showError(head, msg) {
-  document.getElementById('review-form-state').style.display = 'none';
-  document.getElementById('error-state').style.display       = 'block';
-  document.getElementById('error-head').textContent = head;
-  document.getElementById('error-msg').textContent  = msg;
+function showErr(head, msg) {
+  document.getElementById('formstate').style.display = 'none';
+  document.getElementById('errstate').style.display  = 'block';
+  document.getElementById('errhead').textContent = head;
+  document.getElementById('errmsg').textContent  = msg;
 }
+
+// Nav/footer
+(async()=>{
+  try {
+    const m = await import('/lib/gc.js');
+    document.getElementById('nav-root').innerHTML    = m.renderNav();
+    document.getElementById('footer-root').innerHTML = m.renderFooter();
+  } catch(e){}
+})();
 </script>
 </body>
 </html>
